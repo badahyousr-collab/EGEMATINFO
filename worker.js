@@ -13,7 +13,7 @@ async function telegram(env,method,body){
 }
 
 async function handleUpdate(update,env){
-  if(update.message?.text==="/start"){
+  if(update.message?.text?.startsWith("/start")){
     await telegram(env,"sendMessage",{
       chat_id:update.message.chat.id,
       text:"Привет! 👋\n\nВыбери экзамен:",
