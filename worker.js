@@ -122,6 +122,110 @@ async function telegram(env,method,body){
   return r.json();
 }
 
+
+const TASK_ADVICE = {
+  1:"Определи фигуру и нужные элементы. Используй углы, подобие, площади, свойства окружности и пропорции. В геометрии сначала выпиши, что дано, затем найди связь между известными и искомыми величинами.",
+  2:"Переводи условие в векторную форму. Для длины используй координаты, для угла — скалярное произведение. При перпендикулярности скалярное произведение равно нулю.",
+  3:"Выбери формулу объёма или площади нужного тела. Для призмы V=Sосн·h, для пирамиды V=Sосн·h/3, для цилиндра V=πR²h, для конуса V=πR²h/3, для шара V=4πR³/3.",
+  4:"Сначала посчитай число всех равновозможных исходов, затем число благоприятных. Для равновозможных исходов P(A)=m/n. При необходимости используй противоположное событие.",
+  5:"Разбей событие на удобные случаи. Для независимых событий используй умножение вероятностей, для несовместных — сложение. Не забудь вычесть пересечение при формуле объединения.",
+  6:"Составь таблицу значений случайной величины и вероятностей. Проверь сумму вероятностей. Затем считай M(X)=Σxᵢpᵢ и при необходимости D(X)=M(X²)-M(X)².",
+  7:"Начни с ОДЗ. Приводи уравнение к стандартному виду, выбирай подходящую замену/формулу и после решения обязательно проверь корни в исходном уравнении.",
+  8:"Сначала упрости выражение: раскрой или сверни скобки, вынеси общий множитель, используй формулы сокращённого умножения и свойства степеней/логарифмов. Следи за ОДЗ.",
+  9:"Если дан график — ищи геометрический смысл производной и первообразной. Для формулы функции используй таблицу производных. При интеграле применяй Ньютон–Лейбница.",
+  10:"Выдели величины из условия и найди формулу, связывающую их. Подставляй единицы в одной системе и вычисляй только после записи модели.",
+  11:"Обозначь неизвестное одной переменной. Составь уравнение из условия, реши его и проверь ответ по смыслу задачи. Для движения используй S=vt, для работы — A=pt.",
+  12:"По графику определяй область определения, значения, нули, промежутки возрастания/убывания и взаимное расположение графиков. Для преобразований учитывай сдвиги.",
+  13:"Определи начальную сумму, процентную ставку и число периодов. При сложных процентах используй S=P(1+r)^n. В кредитах отдельно следи за остатком долга и платежами.",
+  14:"Реши уравнение с полным контролем ОДЗ и ограничений. После преобразований проверь каждый найденный корень в исходном уравнении — лишние корни нужно исключить.",
+  15:"Сделай рисунок тела и введи обозначения. Найди перпендикуляры, высоты и проекции. Для объёмов/площадей используй стереометрические формулы; для доказательства обосновывай каждый переход теоремой.",
+  16:"Перенеси всё в одну часть, приведи к стандартному виду и выбери метод решения. Для квадратного неравенства используй корни и знаки на промежутках; для логарифмов и степеней сначала ОДЗ.",
+  17:"Сначала построй математическую модель ситуации: введи переменную, вырази через неё остальные величины и составь функцию/уравнение. Затем реши и выбери ответ, имеющий смысл в исходной задаче.",
+  18:"Сделай подробный чертёж. Для доказательства назови теорему, из которой следует каждый ключевой факт: подобие, окружность, параллельность, равенство углов или площадей.",
+  19:"Рассматривай параметр как фиксированное число и исследуй, как меняется число/положение корней. Критические значения обычно возникают при D=0, касании, пересечении или попадании корня на границу ОДЗ.",
+  20:"Разложи числа на простые множители и используй делимость, НОД/НОК, остатки и свойства степеней. Если есть несколько случаев, системно перебери их и проверь ограничения."
+};
+
+function qcUrl(title, datasets, xMin=0, xMax=10, yMin=0, yMax=10){
+  const chart={
+    type:"scatter",
+    data:{datasets:datasets.map(d=>({label:d.label||"",data:d.data,showLine:d.showLine!==false,pointRadius:d.pointRadius??0,borderWidth:d.borderWidth??3,borderColor:"#dbe7f7",backgroundColor:"transparent",fill:false}))},
+    options:{
+      animation:false,responsive:false,
+      plugins:{legend:{display:false},title:{display:true,text:title,color:"#1f2933",font:{size:18,weight:"bold"}}},
+      scales:{x:{type:"linear",min:xMin,max:xMax,display:false},y:{min:yMin,max:yMax,display:false}}
+    }
+  };
+  return "https://quickchart.io/chart?width=700&height=360&format=png&c="+encodeURIComponent(JSON.stringify(chart));
+}
+function circlePoints(cx,cy,r,n=80){
+  return Array.from({length:n+1},(_,i)=>{const t=2*Math.PI*i/n;return{x:cx+r*Math.cos(t),y:cy+r*Math.sin(t)};});
+}
+function taskDiagramUrls(num){
+  const line=(label,data)=>({label,data});
+  const out=[];
+  if(num===1){
+    out.push(qcUrl("Треугольник и высота",[line("triangle",[{x:1,y:1},{x:5,y:8},{x:9,y:1},{x:1,y:1}]),line("height",[{x:5,y:8},{x:5,y:1}])],0,10,0,10));
+    out.push(qcUrl("Окружность и радиус",[line("circle",circlePoints(5,5,3)),line("radius",[{x:5,y:5},{x:8,y:5}])],0,10,0,10));
+  } else if(num===2){
+    out.push(qcUrl("Векторы и проекции",[line("vector",[{x:1,y:2},{x:8,y:7}]),line("projection",[{x:1,y:2},{x:8,y:2},{x:8,y:7}])],0,10,0,10));
+  } else if(num===3||num===15){
+    out.push(qcUrl("Призма",[line("body",[{x:2,y:2},{x:4,y:7},{x:8,y:6},{x:6,y:1},{x:2,y:2}]),line("vertical",[{x:2,y:2},{x:2,y:7},{x:4,y:7},{x:4,y:2}]),line("top",[{x:2,y:7},{x:6,y:6},{x:8,y:6}])],0,10,0,10));
+    out.push(qcUrl("Пирамида",[line("base",[{x:2,y:2},{x:8,y:2},{x:7,y:5},{x:3,y:5},{x:2,y:2}]),line("edges",[{x:5,y:9},{x:2,y:2}]),line("edge2",[{x:5,y:9},{x:8,y:2}]),line("height",[{x:5,y:9},{x:5,y:2}])],0,10,0,10));
+    out.push(qcUrl("Шар",[line("sphere",circlePoints(5,5,3)),line("diameter",[{x:2,y:5},{x:8,y:5}])],0,10,0,10));
+  } else if(num===4||num===5){
+    out.push(qcUrl("Дерево вероятностей",[line("branch1",[{x:1,y:5},{x:5,y:8}]),line("branch2",[{x:1,y:5},{x:5,y:2}]),line("branch3",[{x:5,y:8},{x:9,y:9}]),line("branch4",[{x:5,y:8},{x:9,y:6}]),line("branch5",[{x:5,y:2},{x:9,y:3}]),line("branch6",[{x:5,y:2},{x:9,y:0.5}])],0,10,0,10));
+  } else if(num===6){
+    out.push(qcUrl("Случайная величина: значения и вероятности",[line("distribution",[{x:2,y:2},{x:4,y:5},{x:6,y:3},{x:8,y:7}])],0,10,0,10));
+  } else if(num===7||num===8||num===14||num===16){
+    out.push(qcUrl("Числовая прямая и корни",[line("axis",[{x:1,y:5},{x:9,y:5}]),line("interval",[{x:2,y:5},{x:6,y:5}]),line("point1",[{x:2,y:4.6},{x:2,y:5.4}]),line("point2",[{x:6,y:4.6},{x:6,y:5.4}])],0,10,0,10));
+  } else if(num===9){
+    out.push(qcUrl("График функции и касательная",[line("curve",[{x:1,y:2},{x:2,y:2.8},{x:3,y:4.2},{x:4,y:6.5},{x:5,y:9}]),line("tangent",[{x:2,y:1.8},{x:5,y:7.8}])],0,6,0,10));
+  } else if(num===10){
+    out.push(qcUrl("Модель зависимости величин",[line("model",[{x:1,y:1.5},{x:2,y:2.7},{x:3,y:4.2},{x:4,y:6.0},{x:5,y:8.1}])],0,6,0,10));
+  } else if(num===11){
+    out.push(qcUrl("Схема движения",[line("path",[{x:1,y:5},{x:4,y:5},{x:8,y:5}]),line("time",[{x:1,y:4},{x:8,y:4}])],0,10,0,10));
+  } else if(num===12||num===17||num===19){
+    out.push(qcUrl("Функция / парабола",[line("parabola",[{x:1,y:8},{x:2,y:5},{x:3,y:3},{x:4,y:2},{x:5,y:3},{x:6,y:5},{x:7,y:8}])],0,8,0,10));
+  } else if(num===13){
+    out.push(qcUrl("Рост суммы по периодам",[line("money",[{x:1,y:2},{x:2,y:2.5},{x:3,y:3.2},{x:4,y:4.1},{x:5,y:5.3},{x:6,y:6.8},{x:7,y:8.8}])],0,8,0,10));
+  } else if(num===18){
+    out.push(qcUrl("Планиметрия: подобие и площади",[line("big",[{x:1,y:1},{x:7,y:1},{x:4,y:8},{x:1,y:1}]),line("small",[{x:2.5,y:1},{x:5.5,y:1},{x:4,y:4.5},{x:2.5,y:1}])],0,8,0,10));
+    out.push(qcUrl("Четырёхугольник и диагонали",[line("quad",[{x:2,y:2},{x:8,y:2},{x:7,y:7},{x:3,y:8},{x:2,y:2}]),line("d1",[{x:2,y:2},{x:7,y:7}]),line("d2",[{x:8,y:2},{x:3,y:8}])],0,10,0,10));
+  } else if(num===20){
+    out.push(qcUrl("Делимость и разложение",[line("factors",[{x:1,y:2},{x:2,y:3},{x:3,y:5},{x:4,y:7},{x:5,y:11}])],0,6,0,12));
+  }
+  return out;
+}
+async function sendTextChunks(env,chat_id,text){
+  const parts=[];
+  for(let i=0;i<text.length;i+=3900)parts.push(text.slice(i,i+3900));
+  for(const part of parts)await telegram(env,"sendMessage",{chat_id,text:part});
+}
+async function sendTaskAnswer(env,chat_id,num){
+  const task=TASKS_2027.find(x=>x[0]===num);
+  if(!task)return false;
+  const [n,title,names]=task;
+  const byTitle=new Map(FORMULAS);
+  let out="📘 Задание №"+n+" — "+title+"\\n\\n";
+  out+="🎯 Как решать:\\n"+TASK_ADVICE[n]+"\\n\\n";
+  out+="📚 Что знать:\\n\\n";
+  for(const name of names){
+    const body=byTitle.get(name);
+    if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
+  }
+  await sendTextChunks(env,chat_id,out.trim());
+  const urls=taskDiagramUrls(n);
+  for(const url of urls){
+    const result=await telegram(env,"sendPhoto",{chat_id,photo:url});
+    if(!result?.ok){
+      await telegram(env,"sendMessage",{chat_id,text:"🖼️ Схема не загрузилась автоматически. Открыть мини-шпору со всеми встроенными схемами: https://egematinfo.badahyousr.workers.dev/app"});
+    }
+  }
+  await telegram(env,"sendMessage",{chat_id,text:"✅ Это полный набор основных формул и приёмов для №"+n+". В мини-шпоре эти темы также собраны по карточкам.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}});
+  return true;
+}
+
 async function handleUpdate(update,env){
   if(update.message?.text?.startsWith("/start")){
     await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"Привет! 👋\n\n🎓 Выбор экзамена:\nВыбери предмет:",reply_markup:MAIN_MENU}); return;
@@ -131,30 +235,45 @@ async function handleUpdate(update,env){
     const raw=update.message.text.trim();
     const query=raw.toLowerCase();
     const chat_id=update.message.chat.id;
-    const taskNumber=/^№?\\s*(\\d{1,2})$/.exec(raw)?.[1];
+    const taskNumber=/^№?\s*(\d{1,2})$/.exec(raw)?.[1];
+
     if(taskNumber){
-      const task=TASKS_2027.find(x=>x[0]===Number(taskNumber));
-      if(!task){await telegram(env,"sendMessage",{chat_id,text:"❌ Такого задания нет. В ЕГЭ профиль 2027 задания №1–20."});return;}
-      const [num,title,names]=task;
-      const byTitle=new Map(FORMULAS);
-      let out="📘 Задание №"+num+" — "+title+"\\n\\n";
-      out+="Что нужно знать для решения:\\n\\n";
-      for(const name of names){const body=byTitle.get(name);if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";}
-      await telegram(env,"sendMessage",{chat_id,text:out.trim(),reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}});return;
+      const ok=await sendTaskAnswer(env,chat_id,Number(taskNumber));
+      if(!ok)await telegram(env,"sendMessage",{chat_id,text:"❌ Такого задания нет. В ЕГЭ профиль 2027 задания №1–20."});
+      return;
     }
-    const taskMatches=TASKS_2027.filter(([num,title,names])=>[String(num),title,...names].join(" ").toLowerCase().includes(query));
-    const formulaMatches=FORMULAS.filter(([title,body])=>(title+" "+body).toLowerCase().includes(query));
-    const seen=new Set();
-    const relevant=[...taskMatches.map(t=>t[0]),...TASKS_2027.filter(([num,,names])=>names.some(n=>formulaMatches.some(f=>f[0]===n))).map(t=>t[0])].filter(n=>{if(seen.has(n))return false;seen.add(n);return true});
-    if(relevant.length){
-      let out="🔎 По запросу «"+raw+"» найдено заданий: "+relevant.length+"\\n\\n";
-      for(const n of relevant){const t=TASKS_2027.find(x=>x[0]===n);out+="📘 №"+t[0]+" — "+t[1]+"\\nТемы: "+t[2].join(", ")+"\\n\\n";}
-      out+="Чтобы получить всю шпаргалку по конкретному заданию, отправь только его номер, например: 15.";
-      await telegram(env,"sendMessage",{chat_id,text:out.trim()});return;
+
+    // Поиск по теме: отдаём сам материал, а не список совпадений.
+    const byTitle=new Map(FORMULAS);
+    const matchedFormulas=FORMULAS.filter(([title,body])=>(title+" "+body).toLowerCase().includes(query));
+    const matchedTasks=TASKS_2027.filter(([num,title,names])=>
+      (title+" "+names.join(" ")).toLowerCase().includes(query) ||
+      names.some(name=>name.toLowerCase().includes(query))
+    );
+
+    if(matchedFormulas.length||matchedTasks.length){
+      let out="🔎 Материал по запросу: «"+raw+"»\\n\\n";
+      if(matchedTasks.length){
+        out+="📘 Связанные задания:\\n";
+        for(const [num,title] of matchedTasks)out+="№"+num+" — "+title+"\\n";
+        out+="\\n";
+      }
+      if(matchedFormulas.length){
+        out+="📚 Формулы и правила:\\n\\n";
+        for(const [title,body] of matchedFormulas.slice(0,8))out+="📌 "+title+"\\n"+body+"\\n\\n";
+      }
+      await sendTextChunks(env,chat_id,out.trim());
+
+      const nums=[...new Set(matchedTasks.map(x=>x[0]))];
+      const urls=[];
+      for(const n of nums)urls.push(...taskDiagramUrls(n).slice(0,2));
+      for(const url of urls.slice(0,8))await telegram(env,"sendPhoto",{chat_id,photo:url});
+      await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный разбор конкретного номера — отправь только номер, например «15»."});
+      return;
     }
-    const exactFormula=FORMULAS.find(([title])=>title.toLowerCase()===query);
-    if(exactFormula){await telegram(env,"sendMessage",{chat_id,text:"📌 "+exactFormula[0]+"\\n\\n"+exactFormula[1]});return;}
-    await telegram(env,"sendMessage",{chat_id,text:"❌ Ничего не нашёл. Попробуй номер задания (например, 15) или тему: «пирамида», «логарифмы», «параметры»."}); return;
+
+    await telegram(env,"sendMessage",{chat_id,text:"❌ Ничего не нашёл. Попробуй номер задания (1–20) или тему: «пирамида», «логарифмы», «параметры», «вероятность»."});
+    return;
   }
 
   const q=update.callback_query;if(!q)return;
