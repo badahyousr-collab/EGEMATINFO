@@ -2,7 +2,7 @@ const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback
 const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
 const PROFILE_MENU = {
   inline_keyboard: [
-    [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}],
+    [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}],
     [{text:"🔎 Поиск",callback_data:"search_mode"}],
     [{text:"⬅️ Назад",callback_data:"back_math"}]
   ]
@@ -219,10 +219,10 @@ async function sendTaskAnswer(env,chat_id,num){
   for(const url of urls){
     const result=await telegram(env,"sendPhoto",{chat_id,photo:url});
     if(!result?.ok){
-      await telegram(env,"sendMessage",{chat_id,text:"🖼️ Схема не загрузилась автоматически. Открыть мини-шпору со всеми встроенными схемами: https://egematinfo.badahyousr.workers.dev/app"});
+      await telegram(env,"sendMessage",{chat_id,text:"🖼️ Схема не загрузилась автоматически. Открыть мини-шпору со всеми встроенными схемами: https://egematinfo.badahyousr.workers.dev/app?v=20260926"});
     }
   }
-  await telegram(env,"sendMessage",{chat_id,text:"✅ Это полный набор основных формул и приёмов для №"+n+". В мини-шпоре эти темы также собраны по карточкам.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}});
+  await telegram(env,"sendMessage",{chat_id,text:"✅ Это полный набор основных формул и приёмов для №"+n+". В мини-шпоре эти темы также собраны по карточкам.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}});
   return true;
 }
 
@@ -288,7 +288,7 @@ async function handleUpdate(update,env){
     await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\\n\\nНапример: 15\\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
   }
   else if(q.data==="open_full_file"){
-    await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}}); return;
+    await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}}); return;
   }
   else if(q.data==="back_main"){text="🎓 Выбор экзамена:\nВыбери предмет:";reply_markup=MAIN_MENU}
   else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
