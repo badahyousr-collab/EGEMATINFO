@@ -149,7 +149,7 @@ const TASK_ADVICE = {
 function qcUrl(title, datasets, xMin=0, xMax=10, yMin=0, yMax=10){
   const chart={
     type:"scatter",
-    data:{datasets:datasets.map(d=>({label:d.label||"",data:d.data,showLine:d.showLine!==false,pointRadius:d.pointRadius??0,borderWidth:d.borderWidth??3,borderColor:"#dbe7f7",backgroundColor:"transparent",fill:false}))},
+    data:{datasets:datasets.map(d=>({label:d.label||"",data:d.data,showLine:d.showLine!==false,pointRadius:d.pointRadius??0,borderWidth:d.borderWidth??3,borderColor:"#1f2933",backgroundColor:"#ffffff",fill:false}))},
     options:{
       animation:false,responsive:false,
       plugins:{legend:{display:false},title:{display:true,text:title,color:"#1f2933",font:{size:18,weight:"bold"}}},
@@ -229,7 +229,7 @@ function stemRu(word){
 
 function searchTokens(text){
   return normalizeSearchText(text)
-    .split(/\\s+/)
+    .split(/\s+/)
     .filter(Boolean)
     .map(stemRu);
 }
@@ -255,12 +255,12 @@ async function sendTaskAnswer(env,chat_id,num){
   if(!task)return false;
   const [n,title,names]=task;
   const byTitle=new Map(FORMULAS);
-  let out="📘 Задание №"+n+" — "+title+"\\n\\n";
-  out+="🎯 Как решать:\\n"+TASK_ADVICE[n]+"\\n\\n";
-  out+="📚 Что знать:\\n\\n";
+  let out="📘 Задание №"+n+" — "+title+"\n\n";
+  out+="🎯 Как решать:\n"+TASK_ADVICE[n]+"\n\n";
+  out+="📚 Что знать:\n\n";
   for(const name of names){
     const body=byTitle.get(name);
-    if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
+    if(body)out+="📌 "+name+"\n"+body+"\n\n";
   }
   await sendTextChunks(env,chat_id,out.trim());
   const urls=taskDiagramUrls(n);
@@ -276,7 +276,7 @@ async function sendTaskAnswer(env,chat_id,num){
 
 async function handleUpdate(update,env){
   if(update.message?.text?.startsWith("/start")){
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"Привет! 👋\n\n🎓 Выбор экзамена:\nВыбери предмет:",reply_markup:MAIN_MENU}); return;
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена",reply_markup:MAIN_MENU}); return;
   }
 
   if(update.message?.text && !update.message.text.startsWith("/")){
@@ -301,15 +301,15 @@ async function handleUpdate(update,env){
     );
 
     if(matchedFormulas.length||matchedTasks.length){
-      let out="🔎 Материал по запросу: «"+raw+"»\\n\\n";
+      let out="🔎 Материал по запросу: «"+raw+"»\n\n";
       if(matchedTasks.length){
-        out+="📘 Связанные задания:\\n";
-        for(const [num,title] of matchedTasks)out+="№"+num+" — "+title+"\\n";
-        out+="\\n";
+        out+="📘 Связанные задания:\n";
+        for(const [num,title] of matchedTasks)out+="№"+num+" — "+title+"\n";
+        out+="\n";
       }
       if(matchedFormulas.length){
-        out+="📚 Формулы и правила:\\n\\n";
-        for(const [title,body] of matchedFormulas.slice(0,8))out+="📌 "+title+"\\n"+body+"\\n\\n";
+        out+="📚 Формулы и правила:\n\n";
+        for(const [title,body] of matchedFormulas.slice(0,8))out+="📌 "+title+"\n"+body+"\n\n";
       }
       await sendTextChunks(env,chat_id,out.trim());
 
@@ -334,12 +334,12 @@ async function handleUpdate(update,env){
   else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup={inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
   else if(q.data==="search_mode"){
-    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\\n\\nНапример: 15\\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
+    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
   }
   else if(q.data==="open_full_file"){
     await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}}); return;
   }
-  else if(q.data==="back_main"){text="🎓 Выбор экзамена:\nВыбери предмет:";reply_markup=MAIN_MENU}
+  else if(q.data==="back_main"){text="🎓 Выбор экзамена";reply_markup=MAIN_MENU}
   else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
   if(text)await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
 }
