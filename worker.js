@@ -9,6 +9,29 @@ const PROFILE_MENU = {
   ]
 };
 
+const TASKS_2027 = [
+  [1,"Планиметрия",["Треугольник","Окружность","Теорема Фалеса","Чевиана и площади"]],
+  [2,"Векторы",["Векторы"]],
+  [3,"Стереометрия",["Стереометрия","Шар","Прямая и плоскость"]],
+  [4,"Вероятность случайного события",["Вероятность"]],
+  [5,"Теоремы о вероятностях",["Вероятность"]],
+  [6,"Случайная величина",["Случайные величины"]],
+  [7,"Уравнения",["Квадратные уравнения","Степени и корни","Модули и ОДЗ","Логарифмы","Тригонометрия"]],
+  [8,"Вычисления и преобразования",["Формулы сокращённого умножения","Степени и корни","Модули и ОДЗ","Логарифмы","Тригонометрия"]],
+  [9,"Производная и первообразная",["Производная","Первообразная и интеграл"]],
+  [10,"Прикладное содержание: расчёт по формуле",["Формулы сокращённого умножения","Степени и корни"]],
+  [11,"Текстовая задача",["Арифметическая прогрессия","Геометрическая прогрессия","Квадратные уравнения"]],
+  [12,"Функции и графики",["Парабола","Производная","Логарифмы","Тригонометрия"]],
+  [13,"Текстовая задача, в том числе личные финансы",["Финансовая математика","Арифметическая прогрессия","Геометрическая прогрессия"]],
+  [14,"Уравнение с отбором корней",["Квадратные уравнения","Логарифмы","Тригонометрия","Модули и ОДЗ"]],
+  [15,"Стереометрия: доказательство и вычисление",["Стереометрия","Шар","Прямая и плоскость","Векторы"]],
+  [16,"Неравенство",["Квадратные уравнения","Степени и корни","Логарифмы","Модули и ОДЗ","Тригонометрия"]],
+  [17,"Прикладная задача: математическая модель",["Производная","Первообразная и интеграл","Квадратные уравнения","Парабола","Финансовая математика"]],
+  [18,"Планиметрия: доказательство и вычисление",["Треугольник","Медиана и биссектриса","Окружность","Чевиана и площади","Теорема Фалеса","Теорема Птолемея"]],
+  [19,"Задача с параметром",["Параметры","Квадратные уравнения","Парабола","Логарифмы","Модули и ОДЗ"]],
+  [20,"Числа и их свойства",["Числа и свойства","Квадратные уравнения","Степени и корни"]]
+];
+
 const FORMULAS = [
   ["Формулы сокращённого умножения","(a+b)²=a²+2ab+b²\n(a-b)²=a²-2ab+b²\na²-b²=(a-b)(a+b)\n(a+b)³=a³+3a²b+3ab²+b³\n(a-b)³=a³-3a²b+3ab²-b³\na³+b³=(a+b)(a²-ab+b²)\na³-b³=(a-b)(a²+ab+b²)"],
   ["Степени и корни","aᵐ·aⁿ=aᵐ⁺ⁿ\naᵐ/aⁿ=aᵐ⁻ⁿ\n(aᵐ)ⁿ=aᵐⁿ\n(ab)ⁿ=aⁿbⁿ\na⁰=1 (a≠0)\n√(ab)=√a·√b\n√(a/b)=√a/√b"],
@@ -32,7 +55,10 @@ const FORMULAS = [
   ["Парабола","y=ax²+bx+c\nx₀=-b/(2a)\ny₀=f(x₀)\nD=b²-4ac\nОсь симметрии: x=-b/(2a)"],
   ["Параметры","При задачах с параметром отдельно проверять допустимые значения параметра и количество корней\nГраницы областей удобно получать из условий касания: D=0"],
   ["Векторы","a·b=|a||b|cosα\n|a|=√(x²+y²+z²)\nДля перпендикулярных векторов: a·b=0"],
-  ["Вероятность","P(A)=m/n при равновозможных исходах\nP(не A)=1-P(A)\nP(A∩B)=P(A)P(B), если события независимы\nP(A∪B)=P(A)+P(B)-P(A∩B)"]
+  ["Вероятность","P(A)=m/n при равновозможных исходах\nP(не A)=1-P(A)\nP(A∩B)=P(A)P(B), если события независимы\nP(A∪B)=P(A)+P(B)-P(A∩B)"],
+  ["Случайные величины","Математическое ожидание: M(X)=Σxᵢpᵢ\nДисперсия: D(X)=M(X²)-[M(X)]²\nСреднее квадратическое отклонение: σ(X)=√D(X)\nДля равномерного распределения на [a;b]: M(X)=(a+b)/2"],
+  ["Финансовая математика","S=P(1+r)^n — рост суммы при начислении процентов\nP=S/(1+r)^n — первоначальная сумма\nАннуитетный платёж: A=P·r(1+r)^n/((1+r)^n-1)\nПри сложных процентах проценты начисляются на накопленную сумму"],
+  ["Числа и свойства","a делится на b ⇔ a=kb, k∈ℤ\nНОД(a,b) — наибольший общий делитель\nНОК(a,b) — наименьшее общее кратное\nНОД(a,b)·НОК(a,b)=|ab|\nПростое число имеет ровно два натуральных делителя: 1 и само себя"]
 ];
 
 const APP_CSS = `
@@ -47,13 +73,38 @@ input:focus{border-color:#6e9edb}.section{margin:16px 0 10px;font-size:18px;font
 `;
 
 function appHtml(){
-  const sections=FORMULAS.map((x,i)=>`<div class="card" data-search="${x[0].toLowerCase()} ${x[1].toLowerCase()}"><div class="title">${i+1}. ${x[0]}</div><div class="formula">${x[1]}</div></div>`).join("");
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ</title><style>${APP_CSS}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ математика</h1><div class="sub">Все основные формулы в одном месте</div><input id="search" placeholder="🔎 Найти формулу или тему..." autocomplete="off"><div id="count" class="count"></div></div><section id="list"><div class="section">📚 Все формулы</div>${sections}</section></main><script>
-const input=document.getElementById("search"),cards=[...document.querySelectorAll(".card")],count=document.getElementById("count");
-function filter(){const q=input.value.toLowerCase().trim();let n=0;cards.forEach(c=>{const ok=!q||c.dataset.search.includes(q);c.classList.toggle("hidden",!ok);if(ok)n++});count.textContent=q?"Найдено разделов: "+n:"";}input.addEventListener("input",filter);
-if(new URLSearchParams(location.search).get("search")==="1")setTimeout(()=>input.focus(),150);
-if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}
-</script></body></html>`;
+  const byTitle=new Map(FORMULAS);
+  const taskSections=TASKS_2027.map(([num,title,names])=>{
+    const cards=names.map(name=>{
+      const body=byTitle.get(name);
+      if(!body)return "";
+      return \`<div class="formula-card" data-search="\${num \${title \${name \${body"><div class="formula-title">\${name</div><div class="formula">\${body</div></div>\`;
+    }).join("");
+    return \`<article class="task" data-search="\${num \${title \${names"><button class="task-head" type="button" onclick="toggleTask(this)"><span><b>№\${num</b><span class="task-title">\${title</span></span><span class="chevron">⌄</span></button><div class="task-body">\${cards</div></article>\`;
+  }).join("");
+  const allSections=FORMULAS.map(([title,body],i)=>\`<div class="formula-card" data-search="\${title \${body"><div class="formula-title">\${i. \${title</div><div class="formula">\${body</div></div>\`).join("");
+  return \`<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>
+  :root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}
+  h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+  input{width:100%;background:#292f36;border:1px solid #414953;color:var(--text);border-radius:12px;padding:13px 14px;font-size:16px;outline:none}
+  input:focus{border-color:var(--accent)}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}
+  .task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}
+  .task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}
+  .task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}
+  .task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}
+  .formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}
+  .hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}
+  </style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">Формулы распределены по номерам заданий №1–20</div><input id="search" placeholder="🔎 Поиск по номеру, теме или формуле..." autocomplete="off"><div id="count" class="count"></div></div>
+  <div class="note">Структура сделана по проекту КИМ ЕГЭ-2027. Документы ФИПИ пока имеют статус проекта и могут быть уточнены.</div>
+  <section id="tasks">\${taskSections</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">\${allSections</div></details>
+  </main><script>
+  const input=document.getElementById("search"),tasks=[...document.querySelectorAll(".task")],count=document.getElementById("count");
+  function toggleTask(btn){btn.closest(".task").classList.toggle("open")}
+  function filter(){const q=input.value.toLowerCase().trim();let n=0;tasks.forEach(t=>{const ok=!q||t.dataset.search.toLowerCase().includes(q)||[...t.querySelectorAll(".formula-card")].some(x=>x.dataset.search.toLowerCase().includes(q));t.classList.toggle("hidden",!ok);if(ok)n++;if(q&&ok)t.classList.add("open")});count.textContent=q?"Найдено заданий: "+n:"";}
+  input.addEventListener("input",filter);if(new URLSearchParams(location.search).get("search")==="1")setTimeout(()=>input.focus(),150);if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}
+  </script></body></html>\`;
 }
 
 async function telegram(env,method,body){
