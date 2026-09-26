@@ -1,6 +1,5 @@
-const MAIN_MENU = {inline_keyboard: [[{text:"📚 ЕГЭ",callback_data:"ege"}]]};
-const EGE_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
-const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_ege"}]]};
+const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
+const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
 const PROFILE_MENU = {
   inline_keyboard: [
     [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}],
@@ -126,7 +125,7 @@ async function telegram(env,method,body){
 
 async function handleUpdate(update,env){
   if(update.message?.text?.startsWith("/start")){
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"Привет! 👋\n\nВыбери экзамен:",reply_markup:MAIN_MENU}); return;
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"Привет! 👋\n\n🎓 Выбор экзамена:\nВыбери предмет:",reply_markup:MAIN_MENU}); return;
   }
 
   if(update.message?.text && !update.message.text.startsWith("/")){
@@ -140,8 +139,8 @@ async function handleUpdate(update,env){
   const chat_id=q.message.chat.id,message_id=q.message.message_id;
   let text=null,reply_markup=null;
 
-  if(q.data==="ege"){text="Выбери предмет:";reply_markup=EGE_MENU}
-  else if(q.data==="math"){text="Выбери вариант математики:";reply_markup=MATH_MENU}
+  if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
+  else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup:{inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
   else if(q.data==="open_full_file"){
     await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}}); return;
@@ -149,9 +148,8 @@ async function handleUpdate(update,env){
   else if(q.data==="search_formulas"){
     await telegram(env,"sendMessage",{chat_id,text:"🔎 Открывай поиск по мини-шпаре:",reply_markup:{inline_keyboard:[[{text:"🔎 Поиск формулы",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?search=1"}}]]}}); return;
   }
-  else if(q.data==="back_main"){text="Привет! 👋\n\nВыбери экзамен:";reply_markup=MAIN_MENU}
-  else if(q.data==="back_ege"){text="Выбери предмет:";reply_markup=EGE_MENU}
-  else if(q.data==="back_math"){text="Выбери вариант математики:";reply_markup=MATH_MENU}
+  else if(q.data==="back_main"){text="🎓 Выбор экзамена:\nВыбери предмет:";reply_markup=MAIN_MENU}
+  else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
   if(text)await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
 }
 
