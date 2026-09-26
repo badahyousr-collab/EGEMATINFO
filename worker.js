@@ -3,7 +3,7 @@ const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная мате�
 const PROFILE_MENU = {
   inline_keyboard: [
     [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}],
-    [{text:"🔎 Поиск",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?search=1"}}],
+    [{text:"🔎 Поиск",callback_data:"search_mode"}],
     [{text:"⬅️ Назад",callback_data:"back_math"}]
   ]
 };
@@ -83,10 +83,9 @@ const APP_CSS = `
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
 .wrap{max-width:760px;margin:auto;padding:16px 14px 32px}.top{position:sticky;top:0;z-index:5;background:rgba(32,37,43,.96);padding:8px 0 14px;backdrop-filter:blur(10px)}
 h1{font-size:24px;margin:4px 0 12px}.sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-input{width:100%;background:#292f36;border:1px solid #414953;color:var(--text);border-radius:12px;padding:13px 14px;font-size:16px;outline:none}
-input:focus{border-color:#6e9edb}.section{margin:16px 0 10px;font-size:18px;font-weight:700}.card{background:var(--card);border:1px solid #3b424a;border-radius:14px;margin:9px 0;overflow:hidden}
+.section{margin:16px 0 10px;font-size:18px;font-weight:700}.card{background:var(--card);border:1px solid #3b424a;border-radius:14px;margin:9px 0;overflow:hidden}
 .title{padding:14px 15px;font-size:17px;font-weight:700;background:var(--card2)}.formula{padding:14px 15px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:19px;line-height:1.7;color:#f0f2f4}
-.hidden{display:none}.count{color:var(--muted);font-size:13px;margin-top:9px}
+.hidden{display:none}.count{color:var(--muted);font-size:13px;margin-top:7px}
 `;
 
 function appHtml(){
@@ -115,7 +114,7 @@ function appHtml(){
     return `<article class="task" data-search="${num} ${title} ${names.join(' ')}"><button class="task-head" type="button" onclick="toggleTask(this)"><span><b>№${num}</b><span class="task-title">${title}</span></span><span class="chevron">⌄</span></button><div class="task-body">${cards}</div></article>`;
   }).join('');
   const allSections=FORMULAS.map(([title,body],i)=>`<div class="formula-card" data-search="${title} ${body}"><div class="formula-title">${i+1}. ${title}</div><div class="formula">${body}</div></div>`).join('');
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}input{width:100%;background:#292f36;border:1px solid #414953;color:var(--text);border-radius:12px;padding:13px 14px;font-size:16px;outline:none}input:focus{border-color:var(--accent)}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}.task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}.task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}.task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}.formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}.diagram{display:block;width:100%;max-height:185px;padding:8px 12px;color:#dbe7f7}.hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">№1–20 · формулы, правила и схемы по каждому типу задания</div><input id="search" placeholder="🔎 Поиск по номеру, теме или формуле..." autocomplete="off"><div id="count" class="count"></div></div><div class="note">Основа — «Шпора от Артура»; распределение сделано по проекту КИМ ЕГЭ-2027. Проект ФИПИ ещё может уточняться.</div><section id="tasks">${taskSections}</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">${allSections}</div></details></main><script>const input=document.getElementById('search'),tasks=[...document.querySelectorAll('.task')],count=document.getElementById('count');function toggleTask(btn){btn.closest('.task').classList.toggle('open')}function filter(){const q=input.value.toLowerCase().trim();let n=0;tasks.forEach(t=>{const ok=!q||t.dataset.search.toLowerCase().includes(q)||[...t.querySelectorAll('.formula-card')].some(x=>x.dataset.search.toLowerCase().includes(q));t.classList.toggle('hidden',!ok);if(ok)n++;if(q&&ok)t.classList.add('open')});count.textContent=q?'Найдено заданий: '+n:''}input.addEventListener('input',filter);if(new URLSearchParams(location.search).get('search')==='1')setTimeout(()=>input.focus(),150);if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}.task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}.task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}.task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}.formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}.diagram{display:block;width:100%;max-height:185px;padding:8px 12px;color:#dbe7f7}.hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">№1–20 · формулы, правила и схемы по каждому типу задания</div><div class="count">Выбирай нужное задание или тему в списке ниже.</div></div><div class="note">Основа — «Шпора от Артура»; распределение сделано по проекту КИМ ЕГЭ-2027. Проект ФИПИ ещё может уточняться.</div><section id="tasks">${taskSections}</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">${allSections}</div></details></main><script>function toggleTask(btn){btn.closest('.task').classList.toggle('open')}if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>`;
 }
 
 async function telegram(env,method,body){
@@ -129,9 +128,33 @@ async function handleUpdate(update,env){
   }
 
   if(update.message?.text && !update.message.text.startsWith("/")){
-    const query=update.message.text.toLowerCase().trim();
-    const found=FORMULAS.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(query));
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:found.length?"🔎 Найдено:\n\n"+found.map(x=>"📌 "+x[0]+"\n"+x[1]).join("\n\n"):"Ничего не нашёл. Открой мини-шпору и попробуй поиск по ней."}); return;
+    const raw=update.message.text.trim();
+    const query=raw.toLowerCase();
+    const chat_id=update.message.chat.id;
+    const taskNumber=/^№?\\s*(\\d{1,2})$/.exec(raw)?.[1];
+    if(taskNumber){
+      const task=TASKS_2027.find(x=>x[0]===Number(taskNumber));
+      if(!task){await telegram(env,"sendMessage",{chat_id,text:"❌ Такого задания нет. В ЕГЭ профиль 2027 задания №1–20."});return;}
+      const [num,title,names]=task;
+      const byTitle=new Map(FORMULAS);
+      let out="📘 Задание №"+num+" — "+title+"\\n\\n";
+      out+="Что нужно знать для решения:\\n\\n";
+      for(const name of names){const body=byTitle.get(name);if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";}
+      await telegram(env,"sendMessage",{chat_id,text:out.trim(),reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}});return;
+    }
+    const taskMatches=TASKS_2027.filter(([num,title,names])=>[String(num),title,...names].join(" ").toLowerCase().includes(query));
+    const formulaMatches=FORMULAS.filter(([title,body])=>(title+" "+body).toLowerCase().includes(query));
+    const seen=new Set();
+    const relevant=[...taskMatches.map(t=>t[0]),...TASKS_2027.filter(([num,,names])=>names.some(n=>formulaMatches.some(f=>f[0]===n))).map(t=>t[0])].filter(n=>{if(seen.has(n))return false;seen.add(n);return true});
+    if(relevant.length){
+      let out="🔎 По запросу «"+raw+"» найдено заданий: "+relevant.length+"\\n\\n";
+      for(const n of relevant){const t=TASKS_2027.find(x=>x[0]===n);out+="📘 №"+t[0]+" — "+t[1]+"\\nТемы: "+t[2].join(", ")+"\\n\\n";}
+      out+="Чтобы получить всю шпаргалку по конкретному заданию, отправь только его номер, например: 15.";
+      await telegram(env,"sendMessage",{chat_id,text:out.trim()});return;
+    }
+    const exactFormula=FORMULAS.find(([title])=>title.toLowerCase()===query);
+    if(exactFormula){await telegram(env,"sendMessage",{chat_id,text:"📌 "+exactFormula[0]+"\\n\\n"+exactFormula[1]});return;}
+    await telegram(env,"sendMessage",{chat_id,text:"❌ Ничего не нашёл. Попробуй номер задания (например, 15) или тему: «пирамида», «логарифмы», «параметры»."}); return;
   }
 
   const q=update.callback_query;if(!q)return;
@@ -140,13 +163,13 @@ async function handleUpdate(update,env){
   let text=null,reply_markup=null;
 
   if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
-  else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup:{inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
+  else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup={inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
+  else if(q.data==="search_mode"){
+    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\\n\\nНапример: 15\\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
+  }
   else if(q.data==="open_full_file"){
     await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app"}}]]}}); return;
-  }
-  else if(q.data==="search_formulas"){
-    await telegram(env,"sendMessage",{chat_id,text:"🔎 Открывай поиск по мини-шпаре:",reply_markup:{inline_keyboard:[[{text:"🔎 Поиск формулы",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?search=1"}}]]}}); return;
   }
   else if(q.data==="back_main"){text="🎓 Выбор экзамена:\nВыбери предмет:";reply_markup=MAIN_MENU}
   else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
