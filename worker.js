@@ -197,6 +197,54 @@ function taskDiagramUrls(num){
   }
   return out;
 }
+
+function normalizeSearchText(text){
+  return String(text || "")
+    .toLowerCase()
+    .replace(/ё/g,"е")
+    .replace(/[^а-яa-z0-9]+/g," ")
+    .trim();
+}
+
+// Простая русская лемматизация для поиска: сводим основные падежи,
+// числа и формы слов к общей основе. Например: пирамида/пирамиды/
+// пирамиду/пирамидами/пирамидах -> пирамид.
+function stemRu(word){
+  let w=word;
+  if(w.length<4)return w;
+  const suffixes=[
+    "иями","ями","ами","ого","ему","ому","ее","ие","ые","ое","ей","ий","ый","ой",
+    "иям","ия","ев","ов","ам","ем","ом","ах","ях","ию","ью","ию","ую","юю",
+    "ою","ею","ая","яя","ое","ее","ые","ие","ым","им","ым","им","ых","их",
+    "ую","юю","ую","юю","а","я","ы","и","е","о","у","ю","ь"
+  ];
+  for(const s of suffixes){
+    if(w.length-s.length>=3 && w.endsWith(s)){
+      w=w.slice(0,-s.length);
+      break;
+    }
+  }
+  return w;
+}
+
+function searchTokens(text){
+  return normalizeSearchText(text)
+    .split(/\\s+/)
+    .filter(Boolean)
+    .map(stemRu);
+}
+
+function searchableText(...parts){
+  return searchTokens(parts.join(" ")).join(" ");
+}
+
+function matchesSearch(query, ...parts){
+  const tokens=searchTokens(query).filter(t=>t.length>=2);
+  if(!tokens.length)return false;
+  const haystack=searchableText(...parts);
+  return tokens.every(token=>haystack.includes(token));
+}
+
 async function sendTextChunks(env,chat_id,text){
   const parts=[];
   for(let i=0;i<text.length;i+=3900)parts.push(text.slice(i,i+3900));
@@ -233,7 +281,7 @@ async function handleUpdate(update,env){
 
   if(update.message?.text && !update.message.text.startsWith("/")){
     const raw=update.message.text.trim();
-    const query=raw.toLowerCase();
+    const query=raw;
     const chat_id=update.message.chat.id;
     const taskNumber=/^№?\s*(\d{1,2})$/.exec(raw)?.[1];
 
@@ -245,10 +293,11 @@ async function handleUpdate(update,env){
 
     // Поиск по теме: отдаём сам материал, а не список совпадений.
     const byTitle=new Map(FORMULAS);
-    const matchedFormulas=FORMULAS.filter(([title,body])=>(title+" "+body).toLowerCase().includes(query));
+    const matchedFormulas=FORMULAS.filter(([title,body])=>
+      matchesSearch(query,title,body)
+    );
     const matchedTasks=TASKS_2027.filter(([num,title,names])=>
-      (title+" "+names.join(" ")).toLowerCase().includes(query) ||
-      names.some(name=>name.toLowerCase().includes(query))
+      matchesSearch(query,title,...names)
     );
 
     if(matchedFormulas.length||matchedTasks.length){
