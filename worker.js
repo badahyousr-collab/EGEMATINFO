@@ -147,28 +147,28 @@ const TASK_ADVICE = {
 };
 
 function taskDiagramUrls(num){
-  const u=(name)=>"https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(name);
+  const u=(path)=>"https://upload.wikimedia.org/wikipedia/commons/"+path;
   const files={
-    1:["Triangle's parameter diagram.png","Circle with radius and diameter.png"],
-    2:["Vector Diagram Drawn.png"],
-    3:["Prism definition.png","Pyramid (en).png"],
-    4:["Prob zuhaitza 0001.png"],
-    5:["Probabilitate zuhaitza 0001.png"],
-    6:["Normal distribution function.png"],
-    7:["Trig Functions.png","Parabolic graph convex no roots.PNG"],
-    8:["Trig Functions.png","Circle Properties.png"],
-    9:["Tangent-calculus.png"],
-    10:["Parabola.PNG"],
-    11:["Vector Diagram Drawn.png"],
-    12:["Parabola.PNG"],
-    13:["Normal distribution function.png"],
-    14:["Trig Functions.png","Circle-trig7.svg"],
-    15:["Prism definition.png","Mathematical Pyramid.png"],
-    16:["Parabolic graph convex no roots.PNG"],
-    17:["Parabola.PNG"],
-    18:["Triangle's parameter diagram.png","Circle with radius and diameter.png"],
-    19:["Parabolic function graph upwards.PNG"],
-    20:["Vector Diagram Drawn.png"]
+    1:["b/bf/Triangle%27s_parameter_diagram.png","2/28/Circle_with_radius_and_diameter.png"],
+    2:["b/bf/Vector_Diagram_Drawn.png"],
+    3:["5/5c/Prism_definition.png","9/9f/Pyramid_%28en%29.png"],
+    4:["3/38/Prob_zuhaitza_0001.png"],
+    5:["d/d5/Probabilitate_zuhaitza_0001.png"],
+    6:["9/96/Normal_distribution_function.png"],
+    7:["6/65/Trig_Functions.png","b/b3/Parabolic_graph_convex_no_roots.PNG"],
+    8:["6/65/Trig_Functions.png","2/28/Circle_with_radius_and_diameter.png"],
+    9:["3/37/Tangent-calculus.png"],
+    10:["3/3f/Parabola.PNG"],
+    11:["b/bf/Vector_Diagram_Drawn.png"],
+    12:["3/3f/Parabola.PNG"],
+    13:["9/96/Normal_distribution_function.png"],
+    14:["6/65/Trig_Functions.png"],
+    15:["5/5c/Prism_definition.png","0/05/Mathematical_Pyramid.png"],
+    16:["b/b3/Parabolic_graph_convex_no_roots.PNG"],
+    17:["3/3f/Parabola.PNG"],
+    18:["b/bf/Triangle%27s_parameter_diagram.png","2/28/Circle_with_radius_and_diameter.png"],
+    19:["c/c5/Parabolic_function_graph_upwards.PNG"],
+    20:["b/bf/Vector_Diagram_Drawn.png"]
   };
   return (files[num]||[]).map(u);
 }
