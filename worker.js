@@ -73,7 +73,7 @@ async function handleUpdate(update,env){
   if(q.data==="ege"){text="Выбери предмет:";reply_markup=EGE_MENU}
   else if(q.data==="math"){text="Выбери вариант математики:";reply_markup=MATH_MENU}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nЧто хочешь сделать?";reply_markup=PROFILE_MENU}
-  else if(q.data==="open_full_file"){await telegram(env,"sendMessage",{chat_id,text:"📖 Полный файл с формулами:"}); await telegram(env,"sendDocument",{chat_id,document:env.PDF_FILE_ID,caption:"Шпора от Артура"}); return}
+  else if(q.data==="open_full_file"){await telegram(env,"sendMessage",{chat_id,text:"📖 Полный файл с формулами:"}); await telegram(env,"sendDocument",{chat_id,document:"BQACAgQAAxkBAAMLarfXVN2MA0egZERGfuIqjq40xZgAAgkgAAKLT8FRwbneTthpXkc9BA",caption:"Шпора от Артура"}); return}
   else if(q.data==="search_formulas"){await telegram(env,"sendMessage",{chat_id,text:"🔎 Напиши название формулы или темы. Например: производная, логарифмы, треугольник, окружность, прогрессия, парабола, объём."}); return}
   else if(q.data==="back_main"){text="Привет! 👋\n\nВыбери экзамен:";reply_markup=MAIN_MENU}
   else if(q.data==="back_ege"){text="Выбери предмет:";reply_markup=EGE_MENU}
