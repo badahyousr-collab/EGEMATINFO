@@ -146,56 +146,15 @@ const TASK_ADVICE = {
   20:"Разложи числа на простые множители и используй делимость, НОД/НОК, остатки и свойства степеней. Если есть несколько случаев, системно перебери их и проверь ограничения."
 };
 
-function qcUrl(title, datasets, xMin=0, xMax=10, yMin=0, yMax=10){
-  const chart={
-    type:"scatter",
-    data:{datasets:datasets.map(d=>({label:d.label||"",data:d.data,showLine:d.showLine!==false,pointRadius:d.pointRadius??0,borderWidth:d.borderWidth??3,borderColor:"#1f2933",backgroundColor:"#ffffff",fill:false}))},
-    options:{
-      animation:false,responsive:false,
-      plugins:{legend:{display:false},title:{display:true,text:title,color:"#1f2933",font:{size:18,weight:"bold"}}},
-      scales:{x:{type:"linear",min:xMin,max:xMax,display:false},y:{min:yMin,max:yMax,display:false}}
-    }
-  };
-  return "https://quickchart.io/chart?width=700&height=360&format=png&c="+encodeURIComponent(JSON.stringify(chart));
-}
-function circlePoints(cx,cy,r,n=80){
-  return Array.from({length:n+1},(_,i)=>{const t=2*Math.PI*i/n;return{x:cx+r*Math.cos(t),y:cy+r*Math.sin(t)};});
-}
 function taskDiagramUrls(num){
-  const line=(label,data)=>({label,data});
-  const out=[];
-  if(num===1){
-    out.push(qcUrl("Треугольник и высота",[line("triangle",[{x:1,y:1},{x:5,y:8},{x:9,y:1},{x:1,y:1}]),line("height",[{x:5,y:8},{x:5,y:1}])],0,10,0,10));
-    out.push(qcUrl("Окружность и радиус",[line("circle",circlePoints(5,5,3)),line("radius",[{x:5,y:5},{x:8,y:5}])],0,10,0,10));
-  } else if(num===2){
-    out.push(qcUrl("Векторы и проекции",[line("vector",[{x:1,y:2},{x:8,y:7}]),line("projection",[{x:1,y:2},{x:8,y:2},{x:8,y:7}])],0,10,0,10));
-  } else if(num===3||num===15){
-    out.push(qcUrl("Призма",[line("body",[{x:2,y:2},{x:4,y:7},{x:8,y:6},{x:6,y:1},{x:2,y:2}]),line("vertical",[{x:2,y:2},{x:2,y:7},{x:4,y:7},{x:4,y:2}]),line("top",[{x:2,y:7},{x:6,y:6},{x:8,y:6}])],0,10,0,10));
-    out.push(qcUrl("Пирамида",[line("base",[{x:2,y:2},{x:8,y:2},{x:7,y:5},{x:3,y:5},{x:2,y:2}]),line("edges",[{x:5,y:9},{x:2,y:2}]),line("edge2",[{x:5,y:9},{x:8,y:2}]),line("height",[{x:5,y:9},{x:5,y:2}])],0,10,0,10));
-    out.push(qcUrl("Шар",[line("sphere",circlePoints(5,5,3)),line("diameter",[{x:2,y:5},{x:8,y:5}])],0,10,0,10));
-  } else if(num===4||num===5){
-    out.push(qcUrl("Дерево вероятностей",[line("branch1",[{x:1,y:5},{x:5,y:8}]),line("branch2",[{x:1,y:5},{x:5,y:2}]),line("branch3",[{x:5,y:8},{x:9,y:9}]),line("branch4",[{x:5,y:8},{x:9,y:6}]),line("branch5",[{x:5,y:2},{x:9,y:3}]),line("branch6",[{x:5,y:2},{x:9,y:0.5}])],0,10,0,10));
-  } else if(num===6){
-    out.push(qcUrl("Случайная величина: значения и вероятности",[line("distribution",[{x:2,y:2},{x:4,y:5},{x:6,y:3},{x:8,y:7}])],0,10,0,10));
-  } else if(num===7||num===8||num===14||num===16){
-    out.push(qcUrl("Числовая прямая и корни",[line("axis",[{x:1,y:5},{x:9,y:5}]),line("interval",[{x:2,y:5},{x:6,y:5}]),line("point1",[{x:2,y:4.6},{x:2,y:5.4}]),line("point2",[{x:6,y:4.6},{x:6,y:5.4}])],0,10,0,10));
-  } else if(num===9){
-    out.push(qcUrl("График функции и касательная",[line("curve",[{x:1,y:2},{x:2,y:2.8},{x:3,y:4.2},{x:4,y:6.5},{x:5,y:9}]),line("tangent",[{x:2,y:1.8},{x:5,y:7.8}])],0,6,0,10));
-  } else if(num===10){
-    out.push(qcUrl("Модель зависимости величин",[line("model",[{x:1,y:1.5},{x:2,y:2.7},{x:3,y:4.2},{x:4,y:6.0},{x:5,y:8.1}])],0,6,0,10));
-  } else if(num===11){
-    out.push(qcUrl("Схема движения",[line("path",[{x:1,y:5},{x:4,y:5},{x:8,y:5}]),line("time",[{x:1,y:4},{x:8,y:4}])],0,10,0,10));
-  } else if(num===12||num===17||num===19){
-    out.push(qcUrl("Функция / парабола",[line("parabola",[{x:1,y:8},{x:2,y:5},{x:3,y:3},{x:4,y:2},{x:5,y:3},{x:6,y:5},{x:7,y:8}])],0,8,0,10));
-  } else if(num===13){
-    out.push(qcUrl("Рост суммы по периодам",[line("money",[{x:1,y:2},{x:2,y:2.5},{x:3,y:3.2},{x:4,y:4.1},{x:5,y:5.3},{x:6,y:6.8},{x:7,y:8.8}])],0,8,0,10));
-  } else if(num===18){
-    out.push(qcUrl("Планиметрия: подобие и площади",[line("big",[{x:1,y:1},{x:7,y:1},{x:4,y:8},{x:1,y:1}]),line("small",[{x:2.5,y:1},{x:5.5,y:1},{x:4,y:4.5},{x:2.5,y:1}])],0,8,0,10));
-    out.push(qcUrl("Четырёхугольник и диагонали",[line("quad",[{x:2,y:2},{x:8,y:2},{x:7,y:7},{x:3,y:8},{x:2,y:2}]),line("d1",[{x:2,y:2},{x:7,y:7}]),line("d2",[{x:8,y:2},{x:3,y:8}])],0,10,0,10));
-  } else if(num===20){
-    out.push(qcUrl("Делимость и разложение",[line("factors",[{x:1,y:2},{x:2,y:3},{x:3,y:5},{x:4,y:7},{x:5,y:11}])],0,6,0,12));
-  }
-  return out;
+  const base="https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/assets/thumbs/";
+  const files={
+    1:["task1.jpg"],2:["task2.jpg"],3:["task3.jpg"],4:["task4.jpg"],5:["task5.jpg"],
+    6:["task6.jpg"],7:["task7.jpg"],8:["task8.jpg"],9:["task9.jpg"],10:["task10.jpg"],
+    11:["task11.jpg"],12:["task12.jpg"],13:["task13.jpg"],14:["task14.jpg"],15:["task15.jpg"],
+    16:["task16.jpg"],17:["task17.jpg"],18:["task18.jpg"],19:["task19.jpg"],20:["task20.jpg"]
+  };
+  return (files[num]||[]).map(name=>base+name);
 }
 
 function normalizeSearchText(text){
@@ -315,8 +274,11 @@ async function handleUpdate(update,env){
 
       const nums=[...new Set(matchedTasks.map(x=>x[0]))];
       const urls=[];
-      for(const n of nums)urls.push(...taskDiagramUrls(n).slice(0,2));
-      for(const url of urls.slice(0,8))await telegram(env,"sendPhoto",{chat_id,photo:url});
+      for(const n of nums)urls.push(...taskDiagramUrls(n));
+      for(const url of urls.slice(0,8)){
+        const result=await telegram(env,"sendPhoto",{chat_id,photo:url});
+        if(!result?.ok) await telegram(env,"sendMessage",{chat_id,text:"🖼️ Не удалось отправить схему: "+url});
+      }
       await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный разбор конкретного номера — отправь только номер, например «15»."});
       return;
     }
