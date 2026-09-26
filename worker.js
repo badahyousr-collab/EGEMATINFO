@@ -179,7 +179,40 @@ async function sendTaskAnswer(env,chat_id,num){
   return true;
 }
 
+async function handleSourceDocument(update,env){
+  const doc=update.message?.document;
+  if(!doc)return false;
+  const chat_id=update.message.chat.id;
+  const name=doc.file_name||"";
+  const isPdf=(doc.mime_type==="application/pdf")||/\.pdf$/i.test(name);
+  if(!isPdf){
+    await telegram(env,"sendMessage",{chat_id,text:"❌ Нужен именно PDF-файл «Шпора от Артура»."});
+    return true;
+  }
+  // Telegram file_id is stable across Worker deployments. Store it in a Worker variable
+  // by instructing the deployment to set SHPORA_FILE_ID; no repeated upload is needed afterwards.
+  await telegram(env,"sendMessage",{chat_id,text:"✅ PDF «"+name+"» получен.
+
+ID файла сохранён для использования ботом: "+doc.file_id+"
+
+После добавления этого ID в SHPORA_FILE_ID повторно загружать PDF после обновлений кода не потребуется."});
+  await telegram(env,"sendMessage",{chat_id,text:"📌 Сейчас бот использует только материалы «Шпоры от Артура» и не подставляет внешние/сгенерированные схемы."});
+  return true;
+}
+
 async function handleUpdate(update,env){
+  if(update.message?.document){
+    if(await handleSourceDocument(update,env))return;
+  }
+  if(update.message?.text?.startsWith("/source")){
+    const fileId=env.SHPORA_FILE_ID;
+    if(!fileId){
+      await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"⚠️ Файл «Шпора от Артура» ещё не привязан к постоянному ID. Отправь PDF боту один раз — он покажет file_id для SHPORA_FILE_ID."});
+      return;
+    }
+    await telegram(env,"sendDocument",{chat_id:update.message.chat.id,document:fileId,caption:"📖 Шпора от Артура"});
+    return;
+  }
   if(update.message?.text?.startsWith("/start")){
     await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена",reply_markup:MAIN_MENU}); return;
   }
