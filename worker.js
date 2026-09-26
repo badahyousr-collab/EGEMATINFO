@@ -90,20 +90,7 @@ h1{font-size:24px;margin:4px 0 12px}.sub{color:var(--muted);font-size:13px;margi
 
 function appHtml(){
   const byTitle=new Map(FORMULAS);
-  const visuals={
-    'Треугольник':'<svg viewBox="0 0 320 170" class="diagram"><path d="M35 140 L160 25 L285 140 Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M160 25 L160 140" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5"/><text x="150" y="20">A</text><text x="25" y="158">B</text><text x="288" y="158">C</text><text x="165" y="135">h</text></svg>',
-    'Окружность':'<svg viewBox="0 0 320 170" class="diagram"><circle cx="160" cy="85" r="62" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="160" cy="85" r="4" fill="currentColor"/><path d="M160 85 L222 85" stroke="currentColor" stroke-width="2"/><text x="166" y="79">O</text><text x="188" y="79">R</text></svg>',
-    'Векторы':'<svg viewBox="0 0 320 170" class="diagram"><path d="M45 135 L250 55" stroke="currentColor" stroke-width="3"/><path d="M250 55 l-18 3 l8 14 z" fill="currentColor"/><path d="M45 135 L145 135 M145 135 L145 96" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5"/><text x="120" y="72">a</text></svg>',
-    'Призма':'<svg viewBox="0 0 320 170" class="diagram"><path d="M60 120 L135 78 L255 105 L180 145 Z M60 120 L60 50 L180 75 L180 145 M135 78 L135 8 L255 35 L255 105 M60 50 L135 8 M180 75 L255 35" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>',
-    'Пирамида':'<svg viewBox="0 0 320 170" class="diagram"><path d="M55 135 L265 135 L215 92 L105 92 Z M160 22 L55 135 M160 22 L265 135 M160 22 L105 92 M160 22 L215 92" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M160 22 L160 135" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5"/></svg>',
-    'Шар':'<svg viewBox="0 0 320 170" class="diagram"><circle cx="160" cy="85" r="63" fill="none" stroke="currentColor" stroke-width="3"/><ellipse cx="160" cy="85" rx="63" ry="21" fill="none" stroke="currentColor" stroke-width="2"/><path d="M160 85 L223 85" stroke="currentColor" stroke-width="2"/><text x="172" y="78">R</text></svg>',
-    'Парабола':'<svg viewBox="0 0 320 170" class="diagram"><path d="M25 145 H300 M160 160 V12" stroke="currentColor" stroke-width="1.5"/><path d="M65 140 C105 105 125 52 160 28 C195 52 215 105 255 140" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="160" cy="28" r="4" fill="currentColor"/><text x="168" y="27">В</text></svg>',
-    'Трапеция и четырёхугольники':'<svg viewBox="0 0 320 170" class="diagram"><path d="M85 35 L225 35 L275 135 L45 135 Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M45 135 H275 M85 35 H225" stroke="currentColor" stroke-width="2"/><text x="150" y="28">a</text><text x="150" y="158">b</text><text x="280" y="90">h</text></svg>',
-    'Углы и параллельные прямые':'<svg viewBox="0 0 320 170" class="diagram"><path d="M35 45 H285 M35 125 H285 M85 15 L235 155" fill="none" stroke="currentColor" stroke-width="3"/><text x="98" y="43">α</text><text x="205" y="123">β</text></svg>',
-    'Цилиндр и конус':'<svg viewBox="0 0 320 170" class="diagram"><ellipse cx="85" cy="35" rx="48" ry="15" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M37 35 V125 M133 35 V125" stroke="currentColor" stroke-width="2.5"/><ellipse cx="85" cy="125" rx="48" ry="15" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M190 125 L240 35 L290 125 Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M240 35 V125" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5"/></svg>',
-    'Куб и параллелепипед':'<svg viewBox="0 0 320 170" class="diagram"><path d="M70 55 L175 30 L255 70 L150 98 Z M70 55 V135 L150 165 V98 M255 70 V145 L150 165 M175 30 V105 L255 145" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>',
-    'Тригонометрический круг':'<svg viewBox="0 0 720 360" class="diagram"><circle cx="220" cy="180" r="120" fill="none" stroke="currentColor" stroke-width="3"/><path d="M65 180 H375 M220 25 V335" stroke="currentColor" stroke-width="2"/><path d="M340 40 V320" stroke="currentColor" stroke-width="2" stroke-dasharray="7 6"/><path d="M80 60 H360" stroke="currentColor" stroke-width="2" stroke-dasharray="7 6"/><path d="M220 180 L324 120" stroke="currentColor" stroke-width="2.5"/><circle cx="324" cy="120" r="4" fill="currentColor"/><path d="M324 120 V180 M324 120 V60" stroke="currentColor" stroke-width="2"/><path d="M220 180 L160 284" stroke="currentColor" stroke-width="2.5"/><circle cx="160" cy="284" r="4" fill="currentColor"/><path d="M160 284 H220" stroke="currentColor" stroke-width="2"/><text x="345" y="45">ось tg: x=1</text><text x="335" y="174">tg α</text><text x="88" y="55">ось ctg: y=1</text><text x="168" y="302">ctg α</text><text x="202" y="198">O</text><text x="330" y="113">P</text><text x="55" y="178">−1</text><text x="342" y="198">1</text><text x="227" y="35">1</text><text x="227" y="333">−1</text><text x="235" y="48">π/2</text><text x="338" y="215">0, 2π</text><text x="126" y="208">π</text><path d="M470 90 H680 M575 45 V270" stroke="currentColor" stroke-width="1.5"/><text x="475" y="75">tg α = sin α / cos α</text><text x="475" y="135">ctg α = cos α / sin α</text><text x="475" y="190">tg: π/2+πk — не существует</text><text x="475" y="225">ctg: πk — не существует</text><text x="475" y="260">период обеих функций: π</text></svg>',    'Площади фигур':'<svg viewBox="0 0 320 170" class="diagram"><path d="M30 135 L100 35 L170 135 Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M205 45 H285 V135 H205 Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M215 135 L275 45" stroke="currentColor" stroke-width="2"/></svg>'
-  };
+  const visuals={};
   const taskSections=TASKS_2027.map(([num,title,names])=>{
     const cards=names.map(name=>{
       const body=byTitle.get(name);
@@ -114,7 +101,7 @@ function appHtml(){
     return `<article class="task" data-search="${num} ${title} ${names.join(' ')}"><button class="task-head" type="button" onclick="toggleTask(this)"><span><b>№${num}</b><span class="task-title">${title}</span></span><span class="chevron">⌄</span></button><div class="task-body">${cards}</div></article>`;
   }).join('');
   const allSections=FORMULAS.map(([title,body],i)=>`<div class="formula-card" data-search="${title} ${body}"><div class="formula-title">${i+1}. ${title}</div><div class="formula">${body}</div></div>`).join('');
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}.task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}.task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}.task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}.formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}.diagram{display:block;width:100%;max-height:185px;padding:8px 12px;color:#dbe7f7}.hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">№1–20 · формулы, правила и схемы по каждому типу задания</div><div class="count">Выбирай нужное задание или тему в списке ниже.</div></div><div class="note">Основа — «Шпора от Артура»; распределение сделано по проекту КИМ ЕГЭ-2027. Проект ФИПИ ещё может уточняться.</div><section id="tasks">${taskSections}</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">${allSections}</div></details></main><script>function toggleTask(btn){btn.closest('.task').classList.toggle('open')}if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}.task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}.task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}.task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}.formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}.diagram{display:block;width:100%;max-height:185px;padding:8px 12px;color:#dbe7f7}.hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">№1–20 · формулы и правила по каждому типу задания</div><div class="count">Выбирай нужное задание или тему в списке ниже.</div></div><div class="note">Источник материала — «Шпора от Артура». Внешние изображения и сгенерированные схемы отключены.</div><section id="tasks">${taskSections}</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">${allSections}</div></details></main><script>function toggleTask(btn){btn.closest('.task').classList.toggle('open')}if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>`;
 }
 
 async function telegram(env,method,body){
@@ -122,56 +109,6 @@ async function telegram(env,method,body){
   return r.json();
 }
 
-
-const TASK_ADVICE = {
-  1:"Определи фигуру и нужные элементы. Используй углы, подобие, площади, свойства окружности и пропорции. В геометрии сначала выпиши, что дано, затем найди связь между известными и искомыми величинами.",
-  2:"Переводи условие в векторную форму. Для длины используй координаты, для угла — скалярное произведение. При перпендикулярности скалярное произведение равно нулю.",
-  3:"Выбери формулу объёма или площади нужного тела. Для призмы V=Sосн·h, для пирамиды V=Sосн·h/3, для цилиндра V=πR²h, для конуса V=πR²h/3, для шара V=4πR³/3.",
-  4:"Сначала посчитай число всех равновозможных исходов, затем число благоприятных. Для равновозможных исходов P(A)=m/n. При необходимости используй противоположное событие.",
-  5:"Разбей событие на удобные случаи. Для независимых событий используй умножение вероятностей, для несовместных — сложение. Не забудь вычесть пересечение при формуле объединения.",
-  6:"Составь таблицу значений случайной величины и вероятностей. Проверь сумму вероятностей. Затем считай M(X)=Σxᵢpᵢ и при необходимости D(X)=M(X²)-M(X)².",
-  7:"Начни с ОДЗ. Приводи уравнение к стандартному виду, выбирай подходящую замену/формулу и после решения обязательно проверь корни в исходном уравнении.",
-  8:"Сначала упрости выражение: раскрой или сверни скобки, вынеси общий множитель, используй формулы сокращённого умножения и свойства степеней/логарифмов. Следи за ОДЗ.",
-  9:"Если дан график — ищи геометрический смысл производной и первообразной. Для формулы функции используй таблицу производных. При интеграле применяй Ньютон–Лейбница.",
-  10:"Выдели величины из условия и найди формулу, связывающую их. Подставляй единицы в одной системе и вычисляй только после записи модели.",
-  11:"Обозначь неизвестное одной переменной. Составь уравнение из условия, реши его и проверь ответ по смыслу задачи. Для движения используй S=vt, для работы — A=pt.",
-  12:"По графику определяй область определения, значения, нули, промежутки возрастания/убывания и взаимное расположение графиков. Для преобразований учитывай сдвиги.",
-  13:"Определи начальную сумму, процентную ставку и число периодов. При сложных процентах используй S=P(1+r)^n. В кредитах отдельно следи за остатком долга и платежами.",
-  14:"Реши уравнение с полным контролем ОДЗ и ограничений. После преобразований проверь каждый найденный корень в исходном уравнении — лишние корни нужно исключить.",
-  15:"Сделай рисунок тела и введи обозначения. Найди перпендикуляры, высоты и проекции. Для объёмов/площадей используй стереометрические формулы; для доказательства обосновывай каждый переход теоремой.",
-  16:"Перенеси всё в одну часть, приведи к стандартному виду и выбери метод решения. Для квадратного неравенства используй корни и знаки на промежутках; для логарифмов и степеней сначала ОДЗ.",
-  17:"Сначала построй математическую модель ситуации: введи переменную, вырази через неё остальные величины и составь функцию/уравнение. Затем реши и выбери ответ, имеющий смысл в исходной задаче.",
-  18:"Сделай подробный чертёж. Для доказательства назови теорему, из которой следует каждый ключевой факт: подобие, окружность, параллельность, равенство углов или площадей.",
-  19:"Рассматривай параметр как фиксированное число и исследуй, как меняется число/положение корней. Критические значения обычно возникают при D=0, касании, пересечении или попадании корня на границу ОДЗ.",
-  20:"Разложи числа на простые множители и используй делимость, НОД/НОК, остатки и свойства степеней. Если есть несколько случаев, системно перебери их и проверь ограничения."
-};
-
-function taskDiagramUrls(num){
-  const u=(path)=>"https://upload.wikimedia.org/wikipedia/commons/"+path;
-  const files={
-    1:["b/bf/Triangle%27s_parameter_diagram.png","2/28/Circle_with_radius_and_diameter.png"],
-    2:["b/bf/Vector_Diagram_Drawn.png"],
-    3:["5/5c/Prism_definition.png","9/9f/Pyramid_%28en%29.png"],
-    4:["3/38/Prob_zuhaitza_0001.png"],
-    5:["d/d5/Probabilitate_zuhaitza_0001.png"],
-    6:["9/96/Normal_distribution_function.png"],
-    7:["6/65/Trig_Functions.png","b/b3/Parabolic_graph_convex_no_roots.PNG"],
-    8:["6/65/Trig_Functions.png","2/28/Circle_with_radius_and_diameter.png"],
-    9:["3/37/Tangent-calculus.png"],
-    10:["b/ba/Parabola.PNG"],
-    11:["b/bf/Vector_Diagram_Drawn.png"],
-    12:["b/ba/Parabola.PNG"],
-    13:["9/96/Normal_distribution_function.png"],
-    14:["6/65/Trig_Functions.png"],
-    15:["5/5c/Prism_definition.png","0/05/Mathematical_Pyramid.png"],
-    16:["b/b3/Parabolic_graph_convex_no_roots.PNG"],
-    17:["b/ba/Parabola.PNG"],
-    18:["b/bf/Triangle%27s_parameter_diagram.png","2/28/Circle_with_radius_and_diameter.png"],
-    19:["c/c5/Parabolic_function_graph_upwards.PNG"],
-    20:["b/bf/Vector_Diagram_Drawn.png"]
-  };
-  return (files[num]||[]).map(u);
-}
 
 function normalizeSearchText(text){
   return String(text || "")
@@ -230,22 +167,15 @@ async function sendTaskAnswer(env,chat_id,num){
   if(!task)return false;
   const [n,title,names]=task;
   const byTitle=new Map(FORMULAS);
-  let out="📘 Задание №"+n+" — "+title+"\n\n";
-  out+="🎯 Как решать:\n"+TASK_ADVICE[n]+"\n\n";
-  out+="📚 Что знать:\n\n";
+  let out="📘 Задание №"+n+" — "+title+"\\n\\n";
+  out+="📚 Материал из «Шпоры от Артура»:\\n\\n";
   for(const name of names){
     const body=byTitle.get(name);
-    if(body)out+="📌 "+name+"\n"+body+"\n\n";
+    if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
   }
   await sendTextChunks(env,chat_id,out.trim());
-  const urls=taskDiagramUrls(n);
-  for(const url of urls){
-    const result=await telegram(env,"sendPhoto",{chat_id,photo:url});
-    if(!result?.ok){
-      await telegram(env,"sendMessage",{chat_id,text:"🖼️ Схема не загрузилась автоматически. Открыть мини-шпору со всеми встроенными схемами: https://egematinfo.badahyousr.workers.dev/app?v=20260926"});
-    }
-  }
-  await telegram(env,"sendMessage",{chat_id,text:"✅ Это полный набор основных формул и приёмов для №"+n+". В мини-шпоре эти темы также собраны по карточкам.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}});
+  await telegram(env,"sendMessage",{chat_id,text:"🖼️ Внешние и сгенерированные схемы отключены. Изображения будут показываться только если они взяты из «Шпоры от Артура»."});
+  await telegram(env,"sendMessage",{chat_id,text:"📖 Полный материал — в мини-шпоре.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}});
   return true;
 }
 
@@ -288,13 +218,6 @@ async function handleUpdate(update,env){
       }
       await sendTextChunks(env,chat_id,out.trim());
 
-      const nums=[...new Set(matchedTasks.map(x=>x[0]))];
-      const urls=[];
-      for(const n of nums)urls.push(...taskDiagramUrls(n));
-      for(const url of urls.slice(0,8)){
-        const result=await telegram(env,"sendPhoto",{chat_id,photo:url});
-        if(!result?.ok) await telegram(env,"sendMessage",{chat_id,text:"🖼️ Не удалось отправить схему: "+url});
-      }
       await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный разбор конкретного номера — отправь только номер, например «15»."});
       return;
     }
