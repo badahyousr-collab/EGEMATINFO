@@ -147,14 +147,30 @@ const TASK_ADVICE = {
 };
 
 function taskDiagramUrls(num){
-  const base="https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/assets/thumbs/";
+  const u=(name)=>"https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(name);
   const files={
-    1:["task1.jpg"],2:["task2.jpg"],3:["task3.jpg"],4:["task4.jpg"],5:["task5.jpg"],
-    6:["task6.jpg"],7:["task7.jpg"],8:["task8.jpg"],9:["task9.jpg"],10:["task10.jpg"],
-    11:["task11.jpg"],12:["task12.jpg"],13:["task13.jpg"],14:["task14.jpg"],15:["task15.jpg"],
-    16:["task16.jpg"],17:["task17.jpg"],18:["task18.jpg"],19:["task19.jpg"],20:["task20.jpg"]
+    1:["Triangle's parameter diagram.png","Circle with radius and diameter.png"],
+    2:["Vector Diagram Drawn.png"],
+    3:["Prism definition.png","Pyramid (en).png"],
+    4:["Prob zuhaitza 0001.png"],
+    5:["Probabilitate zuhaitza 0001.png"],
+    6:["Normal distribution function.png"],
+    7:["Trig Functions.png","Parabolic graph convex no roots.PNG"],
+    8:["Trig Functions.png","Circle Properties.png"],
+    9:["Tangent-calculus.png"],
+    10:["Parabola.PNG"],
+    11:["Vector Diagram Drawn.png"],
+    12:["Parabola.PNG"],
+    13:["Normal distribution function.png"],
+    14:["Trig Functions.png","Circle-trig7.svg"],
+    15:["Prism definition.png","Mathematical Pyramid.png"],
+    16:["Parabolic graph convex no roots.PNG"],
+    17:["Parabola.PNG"],
+    18:["Triangle's parameter diagram.png","Circle with radius and diameter.png"],
+    19:["Parabolic function graph upwards.PNG"],
+    20:["Vector Diagram Drawn.png"]
   };
-  return (files[num]||[]).map(name=>base+name);
+  return (files[num]||[]).map(u);
 }
 
 function normalizeSearchText(text){
