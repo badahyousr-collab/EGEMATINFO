@@ -191,7 +191,7 @@ async function handleSourceDocument(update,env){
   }
   // Telegram file_id is stable across Worker deployments. Store it in a Worker variable
   // by instructing the deployment to set SHPORA_FILE_ID; no repeated upload is needed afterwards.
-  await telegram(env,"sendMessage",{chat_id,text:"✅ PDF «"+name+"» получен.\\n\\nID файла получен: "+doc.file_id+"\\n\\nПосле добавления этого ID в SHPORA_FILE_ID повторно загружать PDF после обновлений кода не потребуется."});
+  await telegram(env,"sendMessage",{chat_id,text:"✅ PDF «"+name+"» получен. ID файла: "+doc.file_id+". Добавь этот ID в SHPORA_FILE_ID один раз — после этого повторно загружать PDF при обновлениях кода не потребуется."});
   await telegram(env,"sendMessage",{chat_id,text:"📌 Сейчас бот использует только материалы «Шпоры от Артура» и не подставляет внешние/сгенерированные схемы."});
   return true;
 }
