@@ -79,6 +79,17 @@ const FORMULAS = [
   ["Текстовые задачи","Движение: S=vt.\nРабота: A=pt.\nПроизводительность: p=A/t.\nКонцентрация: mвещества/mраствора."],
 ];
 
+const SHPORA_PDF_URL = "https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%20%D0%BE%D1%82%20%D0%90%D1%80%D1%82%D1%83%D1%80%D0%B0.pdf";
+const SHPORA_TASK_PAGES = {
+  1:6, 2:5, 3:8, 4:null, 5:null, 6:null,
+  7:0, 8:0, 9:2, 10:3, 11:12, 12:4, 13:null,
+  14:10, 15:9, 16:3, 17:10, 18:7, 19:11, 20:13
+};
+function shporaPageUrl(page){
+  if(page===null || page===undefined)return null;
+  return "https://wsrv.nl/?url="+encodeURIComponent(SHPORA_PDF_URL)+"&page="+page+"&w=1000&output=jpg";
+}
+
 const APP_CSS = `
 :root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#7fb3ff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
@@ -175,7 +186,15 @@ async function sendTaskAnswer(env,chat_id,num){
     if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
   }
   await sendTextChunks(env,chat_id,out.trim());
-  await telegram(env,"sendMessage",{chat_id,text:"🖼️ Внешние и сгенерированные схемы отключены. Изображения будут показываться только если они взяты из «Шпоры от Артура»."});
+
+  const page=SHPORA_TASK_PAGES[n];
+  const imageUrl=shporaPageUrl(page);
+  if(imageUrl){
+    await telegram(env,"sendPhoto",{chat_id,photo:imageUrl,caption:"🖼️ Иллюстрация из «Шпоры от Артура» — материал к заданию №"+n+"."});
+  }else{
+    await telegram(env,"sendMessage",{chat_id,text:"ℹ️ В «Шпоре от Артура» для этого номера нет отдельной иллюстрации — поэтому не подставляю чужую картинку."});
+  }
+
   await telegram(env,"sendMessage",{chat_id,text:"📖 Полный материал — в мини-шпоре.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}});
   return true;
 }
@@ -280,6 +299,12 @@ export default {
   async fetch(request,env){
     const url=new URL(request.url);
     if(url.pathname==="/app")return new Response(appHtml(),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
+    if(url.pathname==="/visual"){
+      const page=Number(new URL(request.url).searchParams.get("page"));
+      const imageUrl=shporaPageUrl(Number.isInteger(page)?page:null);
+      if(!imageUrl)return new Response("Not Found",{status:404});
+      return Response.redirect(imageUrl,302);
+    }
     if(url.pathname==="/setup"){
       const result=await telegram(env,"setWebhook",{url:"https://egematinfo.badahyousr.workers.dev/telegram",allowed_updates:["message","callback_query"]});
       return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});
