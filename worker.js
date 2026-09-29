@@ -214,6 +214,8 @@ function matchesSearch(query, ...parts){
 }
 
 async function sendTextChunks(env,chat_id,text){
+  // Telegram должен получать реальные переводы строк, а не буквальные \\n  // Последний слой нормализации защищает от двойного экранирования. 
+  text=String(text||"").replace(/\\n/g,"\n");
   const parts=[];
   for(let i=0;i<text.length;i+=3900)parts.push(text.slice(i,i+3900));
   for(const part of parts)await telegram(env,"sendMessage",{chat_id,text:part});
@@ -223,8 +225,7 @@ async function sendTaskAnswer(env,chat_id,num){
   if(!task)return false;
   const [n,title,names]=task;
   const byTitle=new Map(FORMULAS);
-  let out="📘 Задание №"+n+" — "+title+"\\n\\n";
-  out+="📚 Материал из «Шпоры от Артура»:\\n\\n";
+  let out="📘 Задание №"+n+" — "+title+"\n\n";
   for(const name of names){
     const body=byTitle.get(name);
     if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
