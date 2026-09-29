@@ -83,7 +83,7 @@ const SHPORA_PDF_URL = "https://raw.githubusercontent.com/badahyousr-collab/EGEM
 const SHPORA_TASK_PAGES = {
   1:6, 2:5, 3:8, 4:null, 5:null, 6:null,
   7:0, 8:0, 9:2, 10:3, 11:12, 12:4, 13:null,
-  14:10, 15:9, 16:3, 17:10, 18:7, 19:11, 20:13
+  14:0, 15:9, 16:3, 17:2, 18:7, 19:11, 20:13
 };
 function shporaPageUrl(page){
   if(page===null || page===undefined)return null;
