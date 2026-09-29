@@ -1,0 +1,46 @@
+name: Build image OCR manifest
+on:
+  push:
+    paths:
+      - 'vsya mat/**'
+      - 'vsya mat 2/**'
+      - '.github/workflows/image-ocr.yml'
+jobs:
+  ocr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-rus
+          python -m pip install --upgrade pillow pytesseract
+      - name: OCR images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import pytesseract
+          roots=[Path('vsya mat'),Path('vsya mat 2')]
+          out=[]
+          for root in roots:
+            for p in sorted(root.rglob('*')):
+              if p.suffix.lower() not in {'.png','.jpg','.jpeg','.webp'}: continue
+              try:
+                im=Image.open(p)
+                txt=pytesseract.image_to_string(im,lang='rus+eng',config='--psm 6')
+              except Exception as e:
+                txt=f'[OCR ERROR] {e}'
+              out.append(f'### {p.as_posix()}\n{txt.strip()}\n')
+          Path('image_manifest.txt').write_text('\n'.join(out),encoding='utf-8')
+          PY
+      - name: Commit manifest
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add image_manifest.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Add OCR manifest for math illustrations"
+          git push
