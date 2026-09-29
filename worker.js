@@ -268,7 +268,22 @@ async function handleUpdate(update,env){
       }
       await sendTextChunks(env,chat_id,out.trim());
 
-      await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный разбор конкретного номера — отправь только номер, например «15»."});
+      // Если поиск попал сразу на несколько номеров, показываем и их соответствующие страницы из PDF.
+      const visualTasks=matchedTasks
+        .map(([num])=>({num,page:SHPORA_TASK_PAGES[num]}))
+        .filter(x=>x.page!==null && x.page!==undefined);
+      for(const item of visualTasks.slice(0,4)){
+        const imageUrl=shporaPageUrl(item.page);
+        if(imageUrl){
+          await telegram(env,"sendPhoto",{
+            chat_id,
+            photo:imageUrl,
+            caption:"🖼️ «Шпора от Артура» — иллюстрация к заданию №"+item.num+"."
+          });
+        }
+      }
+
+      await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный материал конкретного номера — отправь только номер, например «15»."});
       return;
     }
 
