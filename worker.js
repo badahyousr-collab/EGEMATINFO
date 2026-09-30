@@ -102,7 +102,7 @@ function appHtml(){
     const cards=names.map(name=>{
       const body=byTitle.get(name);
       if(!body)return '';
-      const visual=visuals[name]||'';
+      const sourceImages=taskImageUrls(num).map((u,i)=>`<img class="source-img" loading="lazy" src="${u}" alt="Иллюстрация к заданию №${num} ${i+1}">`).join('');
       return `<div class="formula-card" data-search="${num} ${title} ${name} ${body}"><div class="formula-title">${name}</div><div class="formula">${body}</div></div>`;
     }).join('');
     return `<article class="task" data-search="${num} ${title} ${names.join(' ')}"><button class="task-head" type="button" onclick="toggleTask(this)"><span><b>№${num}</b><span class="task-title">${title}</span></span><span class="chevron">⌄</span></button><div class="task-body">${cards}<div class="source-gallery">${sourceImages}</div></div></article>`;
