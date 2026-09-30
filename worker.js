@@ -1,4 +1,5 @@
 // DEPLOY_VERSION_20260929_BUILD_FIX
+const START_KEYBOARD = {keyboard:[[{text:"🚀 Начать"}]],resize_keyboard:true,is_persistent:true};
 const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
 const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
 const PROFILE_MENU = {
@@ -204,8 +205,9 @@ async function handleUpdate(update,env){
     await telegram(env,"sendDocument",{chat_id:update.message.chat.id,document:fileId,caption:"📖 Шпора от Артура"});
     return;
   }
-  if(update.message?.text?.startsWith("/start")){
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена",reply_markup:MAIN_MENU}); return;
+  if(update.message?.text?.startsWith("/start") || update.message?.text?.trim()==="🚀 Начать"){
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена",reply_markup:MAIN_MENU});
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"Кнопка «🚀 Начать» всегда доступна внизу.",reply_markup:START_KEYBOARD}); return;
   }
 
   if(update.message?.text && !update.message.text.startsWith("/")){
@@ -275,7 +277,7 @@ async function handleUpdate(update,env){
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
-    if(url.pathname==="/app")return new Response(appHtml(),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
+    if(url.pathname==="/app"){try{return new Response(appHtml(),{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"}})}catch(e){return new Response("<!doctype html><meta charset=utf-8><body style=\"font-family:Arial;background:#20252b;color:#eee;padding:24px\"><h2>Мини-шпора временно не загрузилась</h2><p>Открой её ещё раз.</p></body>",{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}})}}
     if(url.pathname==="/setup"){
       const result=await telegram(env,"setWebhook",{url:"https://egematinfo.badahyousr.workers.dev/telegram",allowed_updates:["message","callback_query"]});
       return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});
