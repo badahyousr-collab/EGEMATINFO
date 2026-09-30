@@ -275,7 +275,7 @@ async function handleUpdate(update,env){
 }
 
 export default {
-  async fetch(request,env){
+  async fetch(request,env,ctx){
     const url=new URL(request.url);
     if(url.pathname==="/app"){try{return new Response(appHtml(),{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"}})}catch(e){return new Response("<!doctype html><meta charset=utf-8><body style=\"font-family:Arial;background:#20252b;color:#eee;padding:24px\"><h2>Мини-шпора временно не загрузилась</h2><p>Открой её ещё раз.</p></body>",{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}})}}
     if(url.pathname==="/setup"){
@@ -285,6 +285,6 @@ export default {
     if(url.pathname==="/debug"){const result=await telegram(env,"getWebhookInfo",{});return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});}
     if(request.method==="GET")return new Response("EGEMATINFO bot is running.");
     if(request.method!=="POST")return new Response("Method Not Allowed",{status:405});
-    try{await handleUpdate(await request.json(),env);return new Response("OK");}catch(e){return new Response("Error",{status:500});}
+    try{const update=await request.json(); if(typeof ctx!=="undefined" && ctx?.waitUntil){ctx.waitUntil(handleUpdate(update,env)); return new Response("OK");} await handleUpdate(update,env); return new Response("OK");}catch(e){return new Response("Error",{status:500});}
   }
 };
