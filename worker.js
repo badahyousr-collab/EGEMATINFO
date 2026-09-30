@@ -261,7 +261,6 @@ async function handleUpdate(update,env){
   }
   if(update.message?.text?.startsWith("/start") || update.message?.text?.trim()==="🚀 Старт"){
     await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена\n\nВыберите предмет:",reply_markup:MAIN_MENU});
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🚀 Старт",reply_markup:START_KEYBOARD});
     return;
   }
   if(update.message?.text && !update.message.text.startsWith("/")){
