@@ -211,7 +211,7 @@ async function sendTextChunks(env,chat_id,text){
   text=String(text||"").replace(/\\n/g,"\n");
   const parts=[];
   for(let i=0;i<text.length;i+=3900)parts.push(text.slice(i,i+3900));
-  for(const part of parts)await telegram(env,"sendMessage",{chat_id,text:part});
+  for(const part of parts)await telegram(env,"sendMessage",{chat_id,text:part,reply_markup:START_KEYBOARD});
 }
 async function sendTaskAnswer(env,chat_id,num){
   const task=TASKS_2027.find(x=>x[0]===num);
@@ -315,7 +315,7 @@ async function handleUpdate(update,env){
   else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup={inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
   else if(q.data==="search_mode"){
-    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
+    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:START_KEYBOARD}); return;
   }
   else if(q.data==="open_full_file"){
     await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}}); return;
