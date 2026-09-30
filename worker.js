@@ -1,4 +1,5 @@
 // DEPLOY_VERSION_20260929_BUILD_FIX
+const START_KEYBOARD={keyboard:[[{text:"🚀 Старт"}]],resize_keyboard:true,is_persistent:true};
 const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
 const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
 const PROFILE_MENU = {
@@ -258,11 +259,10 @@ async function handleUpdate(update,env){
     await telegram(env,"sendDocument",{chat_id:update.message.chat.id,document:fileId,caption:"📖 Шпора от Артура"});
     return;
   }
-  if(update.message?.text?.startsWith("/start")){
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена\n\nВыберите предмет:",reply_markup:MAIN_MENU});
+  if(update.message?.text?.startsWith("/start") || update.message?.text?.trim()==="🚀 Старт"){
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена\\n\\nВыберите предмет:",reply_markup:MAIN_MENU});
     return;
   }
-
   if(update.message?.text && !update.message.text.startsWith("/")){
     const raw=update.message.text.trim();
     const query=raw;
