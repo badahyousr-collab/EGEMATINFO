@@ -3,7 +3,7 @@ const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback
 const MATH_MENU = {inline_keyboard: [[{text:"📘 Профильная математика",callback_data:"profile_math"}],[{text:"⬅️ Назад",callback_data:"back_main"}]]};
 const PROFILE_MENU = {
   inline_keyboard: [
-    [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260930"}}],
+    [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}],
     [{text:"🔎 Поиск",callback_data:"search_mode"}],
     [{text:"⬅️ Назад",callback_data:"back_math"}]
   ]
@@ -79,10 +79,294 @@ const FORMULAS = [
   ["Текстовые задачи","Движение: S=vt.\nРабота: A=pt.\nПроизводительность: p=A/t.\nКонцентрация: mвещества/mраствора."],
 ];
 
-const IMAGE_FILES=["vsya mat/Снимок экрана 2026-09-29 183414.png","vsya mat/Снимок экрана 2026-09-29 183421.png","vsya mat/Снимок экрана 2026-09-29 183454.png","vsya mat/Снимок экрана 2026-09-29 183508.png","vsya mat/Снимок экрана 2026-09-29 183515.png","vsya mat/Снимок экрана 2026-09-29 183521.png","vsya mat/Снимок экрана 2026-09-29 183526.png","vsya mat/Снимок экрана 2026-09-29 183533.png","vsya mat/Снимок экрана 2026-09-29 183540.png","vsya mat/Снимок экрана 2026-09-29 183548.png","vsya mat/Снимок экрана 2026-09-29 183556.png","vsya mat/Снимок экрана 2026-09-29 183603.png","vsya mat/Снимок экрана 2026-09-29 183613.png","vsya mat/Снимок экрана 2026-09-29 183627.png","vsya mat/Снимок экрана 2026-09-29 183636.png","vsya mat/Снимок экрана 2026-09-29 183729.png","vsya mat/Снимок экрана 2026-09-29 183740.png","vsya mat/Снимок экрана 2026-09-29 183820.png","vsya mat/Снимок экрана 2026-09-29 183827.png","vsya mat/Снимок экрана 2026-09-29 183834.png","vsya mat/Снимок экрана 2026-09-29 183840.png","vsya mat/Снимок экрана 2026-09-29 183848.png","vsya mat/Снимок экрана 2026-09-29 183855.png","vsya mat/Снимок экрана 2026-09-29 183902.png","vsya mat/Снимок экрана 2026-09-29 183911.png","vsya mat/Снимок экрана 2026-09-29 183918.png","vsya mat/Снимок экрана 2026-09-29 183926.png","vsya mat/Снимок экрана 2026-09-29 183937.png","vsya mat/Снимок экрана 2026-09-29 184004.png","vsya mat/Снимок экрана 2026-09-29 184012.png","vsya mat/Снимок экрана 2026-09-29 184038.png","vsya mat/Снимок экрана 2026-09-29 184043.png","vsya mat/Снимок экрана 2026-09-29 184049.png","vsya mat/Снимок экрана 2026-09-29 184055.png","vsya mat/Снимок экрана 2026-09-29 184102.png","vsya mat/Снимок экрана 2026-09-29 184110.png","vsya mat/Снимок экрана 2026-09-29 184121.png","vsya mat/Снимок экрана 2026-09-29 184652.png","vsya mat/Снимок экрана 2026-09-29 184658.png","vsya mat/Снимок экрана 2026-09-29 184707.png","vsya mat/Снимок экрана 2026-09-29 184716.png","vsya mat/Снимок экрана 2026-09-29 184735.png","vsya mat/Снимок экрана 2026-09-29 184747.png","vsya mat/Снимок экрана 2026-09-29 184757.png","vsya mat/Снимок экрана 2026-09-29 184810.png","vsya mat/Снимок экрана 2026-09-29 184819.png","vsya mat/Снимок экрана 2026-09-29 184827.png","vsya mat/Снимок экрана 2026-09-29 184842.png","vsya mat/Снимок экрана 2026-09-29 184851.png","vsya mat/Снимок экрана 2026-09-29 184901.png","vsya mat/Снимок экрана 2026-09-29 184916.png","vsya mat/Снимок экрана 2026-09-29 184929.png","vsya mat/Снимок экрана 2026-09-29 184936.png","vsya mat/Снимок экрана 2026-09-29 184947.png","vsya mat/Снимок экрана 2026-09-29 184952.png","vsya mat/Снимок экрана 2026-09-29 185001.png","vsya mat/Снимок экрана 2026-09-29 185011.png","vsya mat/Снимок экрана 2026-09-29 185143.png","vsya mat/Снимок экрана 2026-09-29 185153.png","vsya mat/Снимок экрана 2026-09-29 185202.png","vsya mat/Снимок экрана 2026-09-29 185211.png","vsya mat/Снимок экрана 2026-09-29 185219.png","vsya mat/Снимок экрана 2026-09-29 185240.png","vsya mat/Снимок экрана 2026-09-29 185249.png","vsya mat/Снимок экрана 2026-09-29 185258.png","vsya mat/Снимок экрана 2026-09-29 185307.png","vsya mat/Снимок экрана 2026-09-29 185319.png","vsya mat/Снимок экрана 2026-09-29 185325.png","vsya mat/Снимок экрана 2026-09-29 185339.png","vsya mat/Снимок экрана 2026-09-29 185348.png","vsya mat/Снимок экрана 2026-09-29 185359.png","vsya mat/Снимок экрана 2026-09-29 185407.png","vsya mat/Снимок экрана 2026-09-29 185414.png","vsya mat/Снимок экрана 2026-09-29 185422.png","vsya mat/Снимок экрана 2026-09-29 185428.png","vsya mat/Снимок экрана 2026-09-29 185447.png","vsya mat/Снимок экрана 2026-09-29 185513.png","vsya mat/Снимок экрана 2026-09-29 185524.png","vsya mat/Снимок экрана 2026-09-29 185530.png","vsya mat/Снимок экрана 2026-09-29 185539.png","vsya mat/Снимок экрана 2026-09-29 185548.png","vsya mat/Снимок экрана 2026-09-29 185557.png","vsya mat/Снимок экрана 2026-09-29 185604.png","vsya mat/Снимок экрана 2026-09-29 185611.png","vsya mat/Снимок экрана 2026-09-29 185620.png","vsya mat/Снимок экрана 2026-09-29 185632.png","vsya mat/Снимок экрана 2026-09-29 185655.png","vsya mat/Снимок экрана 2026-09-29 185704.png","vsya mat/Снимок экрана 2026-09-29 185718.png","vsya mat 2/Снимок экрана 2026-09-29 181210.png","vsya mat 2/Снимок экрана 2026-09-29 181223.png","vsya mat 2/Снимок экрана 2026-09-29 181251.png","vsya mat 2/Снимок экрана 2026-09-29 181304.png","vsya mat 2/Снимок экрана 2026-09-29 181316.png","vsya mat 2/Снимок экрана 2026-09-29 181327.png","vsya mat 2/Снимок экрана 2026-09-29 181354.png","vsya mat 2/Снимок экрана 2026-09-29 181451.png","vsya mat 2/Снимок экрана 2026-09-29 181501.png","vsya mat 2/Снимок экрана 2026-09-29 181512.png","vsya mat 2/Снимок экрана 2026-09-29 181533.png","vsya mat 2/Снимок экрана 2026-09-29 181545.png","vsya mat 2/Снимок экрана 2026-09-29 181718.png","vsya mat 2/Снимок экрана 2026-09-29 181735.png","vsya mat 2/Снимок экрана 2026-09-29 181745.png","vsya mat 2/Снимок экрана 2026-09-29 181905.png","vsya mat 2/Снимок экрана 2026-09-29 181913.png","vsya mat 2/Снимок экрана 2026-09-29 181924.png","vsya mat 2/Снимок экрана 2026-09-29 181941.png","vsya mat 2/Снимок экрана 2026-09-29 181952.png","vsya mat 2/Снимок экрана 2026-09-29 182000.png","vsya mat 2/Снимок экрана 2026-09-29 182017.png","vsya mat 2/Снимок экрана 2026-09-29 182033.png","vsya mat 2/Снимок экрана 2026-09-29 182040.png","vsya mat 2/Снимок экрана 2026-09-29 182048.png","vsya mat 2/Снимок экрана 2026-09-29 182057.png","vsya mat 2/Снимок экрана 2026-09-29 182104.png","vsya mat 2/Снимок экрана 2026-09-29 182109.png","vsya mat 2/Снимок экрана 2026-09-29 182115.png","vsya mat 2/Снимок экрана 2026-09-29 182134.png","vsya mat 2/Снимок экрана 2026-09-29 182143.png","vsya mat 2/Снимок экрана 2026-09-29 182152.png","vsya mat 2/Снимок экрана 2026-09-29 182201.png","vsya mat 2/Снимок экрана 2026-09-29 182211.png","vsya mat 2/Снимок экрана 2026-09-29 182222.png","vsya mat 2/Снимок экрана 2026-09-29 182231.png","vsya mat 2/Снимок экрана 2026-09-29 182239.png","vsya mat 2/Снимок экрана 2026-09-29 182253.png","vsya mat 2/Снимок экрана 2026-09-29 182311.png","vsya mat 2/Снимок экрана 2026-09-29 182318.png","vsya mat 2/Снимок экрана 2026-09-29 182326.png","vsya mat 2/Снимок экрана 2026-09-29 182340.png","vsya mat 2/Снимок экрана 2026-09-29 182355.png","vsya mat 2/Снимок экрана 2026-09-29 182405.png","vsya mat 2/Снимок экрана 2026-09-29 182415.png","vsya mat 2/Снимок экрана 2026-09-29 182431.png","vsya mat 2/Снимок экрана 2026-09-29 182441.png","vsya mat 2/Снимок экрана 2026-09-29 182449.png","vsya mat 2/Снимок экрана 2026-09-29 182500.png","vsya mat 2/Снимок экрана 2026-09-29 182520.png","vsya mat 2/Снимок экрана 2026-09-29 182534.png","vsya mat 2/Снимок экрана 2026-09-29 182544.png","vsya mat 2/Снимок экрана 2026-09-29 182554.png","vsya mat 2/Снимок экрана 2026-09-29 182605.png","vsya mat 2/Снимок экрана 2026-09-29 182615.png","vsya mat 2/Снимок экрана 2026-09-29 182623.png","vsya mat 2/Снимок экрана 2026-09-29 182657.png","vsya mat 2/Снимок экрана 2026-09-29 182711.png","vsya mat 2/Снимок экрана 2026-09-29 182719.png","vsya mat 2/Снимок экрана 2026-09-29 182731.png","vsya mat 2/Снимок экрана 2026-09-29 182742.png","vsya mat 2/Снимок экрана 2026-09-29 182804.png","vsya mat 2/Снимок экрана 2026-09-29 182816.png","vsya mat 2/Снимок экрана 2026-09-29 182830.png","vsya mat 2/Снимок экрана 2026-09-29 182840.png","vsya mat 2/Снимок экрана 2026-09-29 182852.png","vsya mat 2/Снимок экрана 2026-09-29 182901.png","vsya mat 2/Снимок экрана 2026-09-29 182908.png","vsya mat 2/Снимок экрана 2026-09-29 182916.png","vsya mat 2/Снимок экрана 2026-09-29 182925.png","vsya mat 2/Снимок экрана 2026-09-29 182931.png","vsya mat 2/Снимок экрана 2026-09-29 182948.png","vsya mat 2/Снимок экрана 2026-09-29 183015.png","vsya mat 2/Снимок экрана 2026-09-29 183034.png","vsya mat 2/Снимок экрана 2026-09-29 183118.png","vsya mat 2/Снимок экрана 2026-09-29 183124.png","vsya mat 2/Снимок экрана 2026-09-29 183133.png","vsya mat 2/Снимок экрана 2026-09-29 183140.png","vsya mat 2/Снимок экрана 2026-09-29 183147.png","vsya mat 2/Снимок экрана 2026-09-29 183153.png","vsya mat 2/Снимок экрана 2026-09-29 183159.png","vsya mat 2/Снимок экрана 2026-09-29 183205.png","vsya mat 2/Снимок экрана 2026-09-29 183212.png","vsya mat 2/Снимок экрана 2026-09-29 183218.png","vsya mat 2/Снимок экрана 2026-09-29 183227.png","vsya mat 2/Снимок экрана 2026-09-29 183239.png","vsya mat 2/Снимок экрана 2026-09-29 183247.png","vsya mat 2/Снимок экрана 2026-09-29 183253.png","vsya mat 2/Снимок экрана 2026-09-29 183301.png","vsya mat 2/Снимок экрана 2026-09-29 183331.png","vsya mat 2/Снимок экрана 2026-09-29 183337.png","vsya mat 2/Снимок экрана 2026-09-29 183343.png","vsya mat 2/Снимок экрана 2026-09-29 183350.png","vsya mat 2/Снимок экрана 2026-09-29 183357.png","vsya mat 2/Снимок экрана 2026-09-29 183408.png"];
-const TASK_IMAGE_INDEX={"1":[27,31,32,33,34,35,36,37,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,77,78,79,80,81,82,83,84,85,86,87,88,89,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144],"2":[105,106,107,108,109,110,111],"3":[18,19,20,21,22,23,24,25,26,28,29,30,145,146,147,148,149,150,151,152,153,154,155,156,157],"4":[],"5":[],"6":[],"7":[10,11,12,40,41,46,47,48,49,50,90,91,92,93,94,95,96,100,158,159,160],"8":[40,41,42,90,92,93,94,95,100],"9":[4,5,6,7,8,9,43,44,45,51,97,98,99,164,170,171],"10":[102],"11":[172,173,174,175,176,177,178],"12":[4,5,8,9,43,44,45,50,51,161],"13":[172,173,174,175,176,177,178],"14":[38,39,40,41,52,53,100],"15":[18,19,20,21,22,23,24,25,26,28,29,30,145,146,147,148,149,150,151,152,153,154,155,156,157],"16":[90,91,93,94,95,103,158,159,160,165,170,171],"17":[6,15,16,17,43,44,45,46,47,48,49,50,51,102,161,163,164,165,166,167,168,169,170,171],"18":[27,31,32,33,34,35,36,37,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,77,78,79,80,81,82,83,84,85,86,87,88,89,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144],"19":[10,11,12,14,15,16,43,44,45,46,47,48,49,50,51,158,159,160,161,163,164,165,166,167,168,169,170,171],"20":[180,181,182,183,184]};
-function imageUrl(i){const p=IMAGE_FILES[i-1];return p?"https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/"+p.split("/").map(encodeURIComponent).join("/"):null;}
-function taskImageUrls(n){return (TASK_IMAGE_INDEX[n]||[]).map(imageUrl).filter(Boolean);}
-async function sendSourceImages(env,chat_id,n){const u=taskImageUrls(n);for(let i=0;i<u.length;i+=10){const media=u.slice(i,i+10).map((x,j)=>({type:"photo",media:x,caption:j===0?"🖼️ Материалы «Шпора от Артура» — задание №"+n:""}));if(media.length)await telegram(env,"sendMediaGroup",{chat_id,media});}}
-async function sendTaskAnswer(env,chat_id,num){const task=TASKS_2027.find(x=>x[0]===num);if(!task)return false;const [n,title,names]=task;const byTitle=new Map(FORMULAS);let out="📘 Задание №"+n+" — "+title+"\n\n";for(const name of names){const body=byTitle.get(name);if(body)out+="📌 "+name+"\n"+body+"\n\n";}await sendTextChunks(env,chat_id,out.trim());await sendSourceImages(env,chat_id,n);await telegram(env,"sendMessage",{chat_id,text:"📖 Полный материал — в мини-шпоре.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260930"}}]]}});return true;}
-;
+const TASK_VISUALS={1:"planimetry",2:"vectors",3:"stereo",4:"probability",5:"probability",6:"random",7:"equations",8:"transformations",9:"derivative",10:"applied",11:"text",12:"graphs",13:"finance",14:"trig",15:"stereo",16:"inequality",17:"optimization",18:"planimetry",19:"parameter",20:"numbers"};
+function svgDiagram(type){
+  const titles={
+    planimetry:["Планиметрия","треугольник · окружность · площади · подобие"],
+    vectors:["Векторы","координаты · длина · скалярное произведение"],
+    stereo:["Стереометрия","призма · пирамида · объёмы · площади · сечения"],
+    probability:["Вероятность","события · сложение · умножение · дерево"],
+    random:["Случайные величины","распределение · M(X) · D(X) · σ"],
+    equations:["Уравнения","квадратные · корни · логарифмы · тригонометрия"],
+    transformations:["Преобразования","степени · корни · логарифмы · тождества"],
+    derivative:["Производная","график · касательная · экстремумы"],
+    applied:["Прикладная формула","данные → формула → уравнение → ответ"],
+    text:["Текстовые задачи","движение · работа · смеси · проценты"],
+    finance:["Финансовая математика","кредит · вклад · проценты · платежи"],
+    inequality:["Неравенства","ОДЗ · критические точки · интервалы · знак"],
+    optimization:["Модель и исследование","функция → производная → максимум/минимум"],
+    parameter:["Параметр","число решений · графики · касание · границы"],
+    numbers:["Числа и свойства","делимость · остатки · НОД/НОК · цифры"]
+  };
+  const t=titles[type]||titles.numbers;
+  let body='<rect x="90" y="155" width="820" height="285" rx="22" fill="#2b3138" stroke="#424a54" stroke-width="3"/>';
+  if(type==="graphs"){
+    body='<path d="M150 390H850M220 420V170" stroke="#aeb7c2" stroke-width="3"/><path d="M250 360L420 270L600 190" stroke="#8bb8ff" stroke-width="7" fill="none"/><path d="M250 350Q430 170 650 350" stroke="#e7eaee" stroke-width="7" fill="none"/><path d="M280 205C360 260 360 340 430 385M650 385C720 330 740 250 810 195" stroke="#aeb7c2" stroke-width="7" fill="none"/><text x="675" y="185" fill="#e7eaee" font-size="22" font-family="Arial">y=kx+b</text><text x="665" y="340" fill="#e7eaee" font-size="22" font-family="Arial">y=ax²+bx+c</text><text x="735" y="245" fill="#aeb7c2" font-size="22" font-family="Arial">y=k/x</text><text x="430" y="185" fill="#8bb8ff" font-size="22" font-family="Arial">y=aˣ</text><text x="455" y="330" fill="#e7eaee" font-size="22" font-family="Arial">y=logₐx</text>';
+  }else if(type==="trig"){
+    body='<circle cx="360" cy="300" r="115" fill="none" stroke="#e7eaee" stroke-width="5"/><path d="M210 300H510M360 150V450" stroke="#aeb7c2" stroke-width="3"/><path d="M475 300V180M360 185H475" stroke="#8bb8ff" stroke-width="4"/><text x="550" y="245" fill="#e7eaee" font-size="24" font-family="Arial">sin²x+cos²x=1</text><text x="550" y="290" fill="#8bb8ff" font-size="24" font-family="Arial">tg x = sin x/cos x</text><text x="550" y="335" fill="#8bb8ff" font-size="24" font-family="Arial">ctg x = cos x/sin x</text>';
+  }else if(type==="planimetry"){
+    body='<path d="M180 390L430 170L700 390Z" fill="none" stroke="#e7eaee" stroke-width="6"/><circle cx="430" cy="315" r="90" fill="none" stroke="#8bb8ff" stroke-width="5"/><path d="M430 170V390" stroke="#aeb7c2" stroke-width="3"/><text x="735" y="255" fill="#e7eaee" font-size="23" font-family="Arial">S=ah/2</text><text x="735" y="300" fill="#e7eaee" font-size="23" font-family="Arial">a/sin A=2R</text>';
+  }else if(type==="vectors"){
+    body='<path d="M170 390H820M240 430V170" stroke="#aeb7c2" stroke-width="3"/><path d="M270 360L650 190M270 360L570 405" stroke="#8bb8ff" stroke-width="7"/><text x="520" y="180" fill="#e7eaee" font-size="24" font-family="Arial">a·b=|a||b|cosφ</text><text x="520" y="225" fill="#aeb7c2" font-size="22" font-family="Arial">|a|=√(x²+y²)</text>';
+  }else if(type==="stereo"){
+    body='<path d="M180 390L380 280L610 390L410 500Z M380 280V150L610 260V390 M180 390V260L380 150" fill="none" stroke="#e7eaee" stroke-width="5"/><path d="M380 150L500 85L720 195L610 260Z" fill="none" stroke="#8bb8ff" stroke-width="5"/><text x="735" y="300" fill="#e7eaee" font-size="23" font-family="Arial">V=Sосн·h</text><text x="735" y="340" fill="#e7eaee" font-size="23" font-family="Arial">V=Sосн·h/3</text>';
+  }else if(type==="probability"){
+    body='<circle cx="190" cy="300" r="22" fill="#8bb8ff"/><path d="M215 300H360M360 300L510 220M360 300L510 380M510 220H670M510 380H670" stroke="#e7eaee" stroke-width="5" fill="none"/><text x="690" y="230" fill="#e7eaee" font-size="22" font-family="Arial">P(A∩B)</text><text x="690" y="385" fill="#e7eaee" font-size="22" font-family="Arial">P(A∪B)</text>';
+  }else if(type==="random"){
+    body='<path d="M170 400H650M230 430V170" stroke="#aeb7c2" stroke-width="3"/><rect x="300" y="315" width="70" height="85" fill="#8bb8ff"/><rect x="410" y="250" width="70" height="150" fill="#e7eaee"/><rect x="520" y="190" width="70" height="210" fill="#aeb7c2"/><text x="690" y="250" fill="#e7eaee" font-size="22" font-family="Arial">M(X)=Σxᵢpᵢ</text><text x="690" y="295" fill="#e7eaee" font-size="22" font-family="Arial">D=M(X²)-M(X)²</text><text x="690" y="340" fill="#e7eaee" font-size="22" font-family="Arial">σ=√D</text>';
+  }else{
+    body+='<text x="150" y="250" fill="#e7eaee" font-size="30" font-family="Arial">'+t[0]+'</text><text x="150" y="315" fill="#aeb7c2" font-size="24" font-family="Arial">'+t[1]+'</text>';
+  }
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560"><rect width="1000" height="560" rx="28" fill="#20252b"/><text x="50" y="70" fill="#e7eaee" font-size="36" font-family="Arial" font-weight="700">'+t[0]+'</text><text x="50" y="108" fill="#aeb7c2" font-size="21" font-family="Arial">'+t[1]+'</text>'+body+'</svg>';
+}
+function diagramUrl(type){
+  const origin="https://egematinfo.badahyousr.workers.dev/diagram?type="+encodeURIComponent(type);
+  return "https://wsrv.nl/?url="+encodeURIComponent(origin)+"&w=1000&output=jpg&q=82";
+}
+const SHPORA_PDF_URL = "https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%20%D0%BE%D1%82%20%D0%90%D1%80%D1%82%D1%83%D1%80%D0%B0.pdf";
+const SHPORA_TASK_PAGES = {
+  1:6, 2:5, 3:8, 4:null, 5:null, 6:null,
+  7:0, 8:0, 9:2, 10:3, 11:12, 12:4, 13:null,
+  14:0, 15:9, 16:3, 17:2, 18:7, 19:11, 20:13
+};
+function shporaPageUrl(page){
+  if(page===null || page===undefined)return null;
+  return "https://wsrv.nl/?url="+encodeURIComponent(SHPORA_PDF_URL)+"&page="+page+"&w=1000&output=jpg";
+}
+
+const APP_CSS = `
+:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#7fb3ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:16px 14px 32px}.top{position:sticky;top:0;z-index:5;background:rgba(32,37,43,.96);padding:8px 0 14px;backdrop-filter:blur(10px)}
+h1{font-size:24px;margin:4px 0 12px}.sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.section{margin:16px 0 10px;font-size:18px;font-weight:700}.card{background:var(--card);border:1px solid #3b424a;border-radius:14px;margin:9px 0;overflow:hidden}
+.title{padding:14px 15px;font-size:17px;font-weight:700;background:var(--card2)}.formula{padding:14px 15px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:19px;line-height:1.7;color:#f0f2f4}
+.hidden{display:none}.count{color:var(--muted);font-size:13px;margin-top:7px}
+`;
+
+function appHtml(){
+  const byTitle=new Map(FORMULAS);
+  const visuals={};
+  const taskSections=TASKS_2027.map(([num,title,names])=>{
+    const cards=names.map(name=>{
+      const body=byTitle.get(name);
+      if(!body)return '';
+      const visual=visuals[name]||'';
+      return `<div class="formula-card" data-search="${num} ${title} ${name} ${body}"><div class="formula-title">${name}</div>${visual}<div class="formula">${body}</div></div>`;
+    }).join('');
+    return `<article class="task" data-search="${num} ${title} ${names.join(' ')}"><button class="task-head" type="button" onclick="toggleTask(this)"><span><b>№${num}</b><span class="task-title">${title}</span></span><span class="chevron">⌄</span></button><div class="task-body">${cards}</div></article>`;
+  }).join('');
+  const allSections=FORMULAS.map(([title,body],i)=>`<div class="formula-card" data-search="${title} ${body}"><div class="formula-title">${i+1}. ${title}</div><div class="formula">${body}</div></div>`).join('');
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Мини-шпора ЕГЭ 2027</title><style>:root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#8bb8ff;--line:#424a54}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:14px 12px 36px}.top{position:sticky;top:0;z-index:10;background:rgba(32,37,43,.97);padding:8px 2px 12px;backdrop-filter:blur(10px)}h1{font-size:23px;line-height:1.2;margin:3px 0 5px}.sub{color:var(--muted);font-size:13px;margin-bottom:12px}.note{margin:12px 0;color:var(--muted);font-size:12px;line-height:1.45}.task{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:9px 0;overflow:hidden}.task-head{width:100%;border:0;background:var(--card2);color:var(--text);padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;font-size:16px;cursor:pointer}.task-head b{color:var(--accent);font-size:18px;margin-right:9px}.task-title{font-weight:650}.chevron{font-size:20px;color:var(--muted);transition:.15s}.task.open .chevron{transform:rotate(180deg)}.task-body{display:none;padding:0 9px 9px}.task.open .task-body{display:block}.formula-card{background:#30373f;border:1px solid #3e464f;border-radius:11px;margin:8px 0;overflow:hidden}.formula-title{padding:11px 12px;font-size:15px;font-weight:700}.formula{padding:10px 12px 13px;white-space:pre-line;font-family:"Times New Roman",serif;font-size:18px;line-height:1.62;color:#f0f2f4}.diagram{display:block;width:100%;max-height:185px;padding:8px 12px;color:#dbe7f7}.hidden{display:none!important}.count{color:var(--muted);font-size:12px;margin-top:7px}.all{margin-top:16px}.all summary{cursor:pointer;color:var(--accent);font-weight:650;padding:10px 2px}.all-body{margin-top:3px}</style></head><body><main class="wrap"><div class="top"><h1>📐 Мини-шпора — ЕГЭ профиль 2027</h1><div class="sub">№1–20 · формулы и правила по каждому типу задания</div><div class="count">Выбирай нужное задание или тему в списке ниже.</div></div><div class="note">Источник материала — «Шпора от Артура». Для каждого номера добавлена тематическая миниатюра с основными объектами и приёмами его вариаций.</div><section id="tasks">${taskSections}</section><details class="all"><summary>📚 Все формулы</summary><div class="all-body">${allSections}</div></details></main><script>function toggleTask(btn){btn.closest('.task').classList.toggle('open')}if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>`;
+}
+
+async function telegram(env,method,body){
+  const r=await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/${method}`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+  return r.json();
+}
+
+
+function normalizeSearchText(text){
+  return String(text || "")
+    .toLowerCase()
+    .replace(/ё/g,"е")
+    .replace(/[^а-яa-z0-9]+/g," ")
+    .trim();
+}
+
+// Простая русская лемматизация для поиска: сводим основные падежи,
+// числа и формы слов к общей основе. Например: пирамида/пирамиды/
+// пирамиду/пирамидами/пирамидах -> пирамид.
+function stemRu(word){
+  let w=word;
+  if(w.length<4)return w;
+  const suffixes=[
+    "иями","ями","ами","ого","ему","ому","ее","ие","ые","ое","ей","ий","ый","ой",
+    "иям","ия","ев","ов","ам","ем","ом","ах","ях","ию","ью","ию","ую","юю",
+    "ою","ею","ая","яя","ое","ее","ые","ие","ым","им","ым","им","ых","их",
+    "ую","юю","ую","юю","а","я","ы","и","е","о","у","ю","ь"
+  ];
+  for(const s of suffixes){
+    if(w.length-s.length>=3 && w.endsWith(s)){
+      w=w.slice(0,-s.length);
+      break;
+    }
+  }
+  return w;
+}
+
+function searchTokens(text){
+  return normalizeSearchText(text)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(stemRu);
+}
+
+function searchableText(...parts){
+  return searchTokens(parts.join(" ")).join(" ");
+}
+
+function matchesSearch(query, ...parts){
+  const tokens=searchTokens(query).filter(t=>t.length>=2);
+  if(!tokens.length)return false;
+  const haystack=searchableText(...parts);
+  return tokens.every(token=>haystack.includes(token));
+}
+
+async function sendTextChunks(env,chat_id,text){
+  // Telegram должен получать реальные переводы строк, а не буквальные \\n  // Последний слой нормализации защищает от двойного экранирования. 
+  text=String(text||"").replace(/\\n/g,"\n");
+  const parts=[];
+  for(let i=0;i<text.length;i+=3900)parts.push(text.slice(i,i+3900));
+  for(const part of parts)await telegram(env,"sendMessage",{chat_id,text:part});
+}
+async function sendTaskAnswer(env,chat_id,num){
+  const task=TASKS_2027.find(x=>x[0]===num);
+  if(!task)return false;
+  const [n,title,names]=task;
+  const byTitle=new Map(FORMULAS);
+  let out="📘 Задание №"+n+" — "+title+"\n\n";
+  for(const name of names){
+    const body=byTitle.get(name);
+    if(body)out+="📌 "+name+"\\n"+body+"\\n\\n";
+  }
+  await sendTextChunks(env,chat_id,out.trim());
+
+  const page=SHPORA_TASK_PAGES[n];
+  const imageUrl=shporaPageUrl(page);
+  if(imageUrl)await telegram(env,"sendPhoto",{chat_id,photo:imageUrl,caption:"🖼️ «Шпора от Артура» — материал к заданию №"+n+"."});
+  const visualType=TASK_VISUALS[n];
+  if(visualType)await telegram(env,"sendPhoto",{chat_id,photo:diagramUrl(visualType),caption:"📌 Схема к заданию №"+n+" — основные объекты и приёмы для его вариаций."});
+
+  await telegram(env,"sendMessage",{chat_id,text:"📖 Полный материал — в мини-шпоре.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}});
+  return true;
+}
+
+async function handleSourceDocument(update,env){
+  const doc=update.message?.document;
+  if(!doc)return false;
+  const chat_id=update.message.chat.id;
+  const name=doc.file_name||"";
+  const isPdf=(doc.mime_type==="application/pdf")||/\.pdf$/i.test(name);
+  if(!isPdf){
+    await telegram(env,"sendMessage",{chat_id,text:"❌ Нужен именно PDF-файл «Шпора от Артура»."});
+    return true;
+  }
+  // Telegram file_id is stable across Worker deployments. Store it in a Worker variable
+  // by instructing the deployment to set SHPORA_FILE_ID; no repeated upload is needed afterwards.
+  const pdfInfoMessage = ["✅ PDF «", name, "» получен. ID файла: ", doc.file_id, ". Добавь этот ID в SHPORA_FILE_ID один раз — после этого повторно загружать PDF при обновлениях кода не потребуется."].join("");
+  await telegram(env,"sendMessage",{chat_id,text:pdfInfoMessage});
+  await telegram(env,"sendMessage",{chat_id,text:"📌 Сейчас бот использует только материалы «Шпоры от Артура» и не подставляет внешние/сгенерированные схемы."});
+  return true;
+}
+
+async function handleUpdate(update,env){
+  if(update.message?.document){
+    if(await handleSourceDocument(update,env))return;
+  }
+  if(update.message?.text?.startsWith("/source")){
+    const fileId=env.SHPORA_FILE_ID;
+    if(!fileId){
+      await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"⚠️ Файл «Шпора от Артура» ещё не привязан к постоянному ID. Отправь PDF боту один раз — он покажет file_id для SHPORA_FILE_ID."});
+      return;
+    }
+    await telegram(env,"sendDocument",{chat_id:update.message.chat.id,document:fileId,caption:"📖 Шпора от Артура"});
+    return;
+  }
+  if(update.message?.text?.startsWith("/start")){
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена",reply_markup:MAIN_MENU}); return;
+  }
+
+  if(update.message?.text && !update.message.text.startsWith("/")){
+    const raw=update.message.text.trim();
+    const query=raw;
+    const chat_id=update.message.chat.id;
+    const taskNumber=/^№?\s*(\d{1,2})$/.exec(raw)?.[1];
+
+    if(taskNumber){
+      const ok=await sendTaskAnswer(env,chat_id,Number(taskNumber));
+      if(!ok)await telegram(env,"sendMessage",{chat_id,text:"❌ Такого задания нет. В ЕГЭ профиль 2027 задания №1–20."});
+      return;
+    }
+
+    // Поиск по теме: отдаём сам материал, а не список совпадений.
+    const byTitle=new Map(FORMULAS);
+    const matchedFormulas=FORMULAS.filter(([title,body])=>
+      matchesSearch(query,title,body)
+    );
+    const matchedTasks=TASKS_2027.filter(([num,title,names])=>
+      matchesSearch(query,title,...names)
+    );
+
+    if(matchedFormulas.length||matchedTasks.length){
+      let out="🔎 Материал по запросу: «"+raw+"»\n\n";
+      if(matchedTasks.length){
+        out+="📘 Связанные задания:\n";
+        for(const [num,title] of matchedTasks)out+="№"+num+" — "+title+"\n";
+        out+="\n";
+      }
+      if(matchedFormulas.length){
+        out+="📚 Формулы и правила:\n\n";
+        for(const [title,body] of matchedFormulas.slice(0,8))out+="📌 "+title+"\n"+body+"\n\n";
+      }
+      await sendTextChunks(env,chat_id,out.trim());
+
+      // Если поиск попал сразу на несколько номеров, показываем и их соответствующие страницы из PDF.
+      const visualTasks=matchedTasks.map(([num])=>({num,page:SHPORA_TASK_PAGES[num],visual:TASK_VISUALS[num]}));
+      for(const item of visualTasks.slice(0,4)){
+        const imageUrl=shporaPageUrl(item.page);
+        if(imageUrl)await telegram(env,"sendPhoto",{chat_id,photo:imageUrl,caption:"🖼️ «Шпора от Артура» — материал к заданию №"+item.num+"."});
+        if(item.visual)await telegram(env,"sendPhoto",{chat_id,photo:diagramUrl(item.visual),caption:"📌 Схема к заданию №"+item.num+"."});
+      }
+
+      await telegram(env,"sendMessage",{chat_id,text:"Если нужен полный материал конкретного номера — отправь только номер, например «15»."});
+      return;
+    }
+
+    await telegram(env,"sendMessage",{chat_id,text:"❌ Ничего не нашёл. Попробуй номер задания (1–20) или тему: «пирамида», «логарифмы», «параметры», «вероятность»."});
+    return;
+  }
+
+  const q=update.callback_query;if(!q)return;
+  await telegram(env,"answerCallbackQuery",{callback_query_id:q.id});
+  const chat_id=q.message.chat.id,message_id=q.message.message_id;
+  let text=null,reply_markup=null;
+
+  if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
+  else if(q.data==="informatics"){text="💻 Информатика\n\nРаздел информатики готовится.";reply_markup={inline_keyboard:[[{text:"⬅️ Назад",callback_data:"back_main"}]]}}
+  else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
+  else if(q.data==="search_mode"){
+    await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:{force_reply:true,input_field_placeholder:"Номер задания или тема"}}); return;
+  }
+  else if(q.data==="open_full_file"){
+    await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}}); return;
+  }
+  else if(q.data==="back_main"){text="🎓 Выбор экзамена";reply_markup=MAIN_MENU}
+  else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
+  if(text)await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
+}
+
+export default {
+  async fetch(request,env){
+    const url=new URL(request.url);
+    if(url.pathname==="/app")return new Response(appHtml(),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
+    if(url.pathname==="/diagram"){
+      const type=new URL(request.url).searchParams.get("type")||"numbers";
+      return new Response(svgDiagram(type),{headers:{"content-type":"image/svg+xml; charset=utf-8","cache-control":"public,max-age=86400"}});
+    }
+    if(url.pathname==="/visual"){
+      const page=Number(new URL(request.url).searchParams.get("page"));
+      const imageUrl=shporaPageUrl(Number.isInteger(page)?page:null);
+      if(!imageUrl)return new Response("Not Found",{status:404});
+      return Response.redirect(imageUrl,302);
+    }
+    if(url.pathname==="/setup"){
+      const result=await telegram(env,"setWebhook",{url:"https://egematinfo.badahyousr.workers.dev/telegram",allowed_updates:["message","callback_query"]});
+      return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});
+    }
+    if(url.pathname==="/debug"){const result=await telegram(env,"getWebhookInfo",{});return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});}
+    if(request.method==="GET")return new Response("EGEMATINFO bot is running.");
+    if(request.method!=="POST")return new Response("Method Not Allowed",{status:405});
+    try{await handleUpdate(await request.json(),env);return new Response("OK");}catch(e){return new Response("Error",{status:500});}
+  }
+};
