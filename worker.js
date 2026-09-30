@@ -276,16 +276,6 @@ export default {
   async fetch(request,env){
     const url=new URL(request.url);
     if(url.pathname==="/app")return new Response(appHtml(),{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
-    if(url.pathname==="/diagram"){
-      const type=new URL(request.url).searchParams.get("type")||"numbers";
-      return new Response(svgDiagram(type),{headers:{"content-type":"image/svg+xml; charset=utf-8","cache-control":"public,max-age=86400"}});
-    }
-    if(url.pathname==="/visual"){
-      const page=Number(new URL(request.url).searchParams.get("page"));
-      const imageUrl=shporaPageUrl(Number.isInteger(page)?page:null);
-      if(!imageUrl)return new Response("Not Found",{status:404});
-      return Response.redirect(imageUrl,302);
-    }
     if(url.pathname==="/setup"){
       const result=await telegram(env,"setWebhook",{url:"https://egematinfo.badahyousr.workers.dev/telegram",allowed_updates:["message","callback_query"]});
       return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});
