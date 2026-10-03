@@ -294,9 +294,9 @@ async function handleUpdate(update,env){
   }
   if(update.message?.text && !update.message.text.startsWith("/")){
     const raw=update.message.text.trim();
-    const query=raw;
+    const query=raw.replace(/^инф\s*/i,"").trim();
     const chat_id=update.message.chat.id;
-    const taskNumber=/^№?\s*(\d{1,2})$/.exec(raw)?.[1];
+    const taskNumber=/^(?:инф\s*)?№?\s*(\d{1,2})$/i.exec(raw)?.[1];
 
     if(taskNumber && /^инф/i.test(raw)){
       const ok=await sendInfoTaskAnswer(env,chat_id,Number(taskNumber));
