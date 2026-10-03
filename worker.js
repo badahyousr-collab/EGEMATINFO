@@ -250,7 +250,7 @@ async function sendInfoTaskAnswer(env,chat_id,num){
   const task=INFO_TASKS_2027.find(x=>x[0]===num); if(!task)return false;
   const [n,title,names]=task; let out="💻 Задание №"+n+" — "+title+"\\n\\n📌 "+names.map(x=>"• "+x).join("\\n");
   const h=INFO_HIGHLIGHTS[n]||[]; if(h.length)out+="\\n\\n⭐ Главное:\\n"+h.map(x=>"• "+x).join("\\n");
-  const codes=INFO_CODE.filter(([t])=>t.startsWith("№"+n+" ")); if(codes.length)out+="\\n\\n💻 Шаблон:\\n"+codes.map(x=>x[1]).join("\\n\\n");
+  const codes=INFO_CODE.filter(([t])=>t.startsWith("№"+n+" ")||t.startsWith("№"+n+" —")||t.startsWith("№"+n+" –")); if(codes.length)out+="\\n\\n💻 Программа / шаблон:\\n"+codes.map(x=>"📌 "+x[0]+"\\n"+x[1]).join("\\n\\n");
   await sendTextChunks(env,chat_id,out); return true;
 }
 async function sendTaskAnswer(env,chat_id,num){
