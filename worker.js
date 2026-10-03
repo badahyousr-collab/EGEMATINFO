@@ -192,7 +192,27 @@ const TASK_IMAGE_INDEX={
 "20":[1,2,179,180,181,182,183,184]};
 function imageUrl(i){const p=IMAGE_FILES[i-1];return p?"https://raw.githubusercontent.com/badahyousr-collab/EGEMATINFO/main/"+p.split("/").map(encodeURIComponent).join("/"):null;}
 function taskImageUrls(n){return (TASK_IMAGE_INDEX[n]||[]).map(imageUrl).filter(Boolean);}
-async function sendSourceImages(env,chat_id,n){\n  const u=taskImageUrls(n);\n  for(let i=0;i<u.length;i++){\n    const caption=i===0?"🖼️ Материалы":undefined;\n    try{\n      const r=await fetch(u[i]);\n      if(!r.ok)throw new Error("image fetch "+r.status);\n      const blob=await r.blob();\n      const form=new FormData();\n      form.append("chat_id",String(chat_id));\n      form.append("photo",blob,"image.png");\n      if(caption)form.append("caption",caption);\n      const tg=await fetch("https://api.telegram.org/bot"+env.BOT_TOKEN+"/sendPhoto",{method:"POST",body:form});\n      if(!tg.ok)throw new Error("telegram sendPhoto "+tg.status);\n    }catch(e){\n      const payload={chat_id,photo:u[i]};\n      if(caption)payload.caption=caption;\n      await telegram(env,"sendPhoto",payload);\n    }\n  }\n}
+async function sendSourceImages(env,chat_id,n){
+  const u=taskImageUrls(n);
+  for(let i=0;i<u.length;i++){
+    const caption=i===0?"🖼️ Материалы":undefined;
+    try{
+      const r=await fetch(u[i]);
+      if(!r.ok)throw new Error("image fetch "+r.status);
+      const blob=await r.blob();
+      const form=new FormData();
+      form.append("chat_id",String(chat_id));
+      form.append("photo",blob,"image.png");
+      if(caption)form.append("caption",caption);
+      const tg=await fetch("https://api.telegram.org/bot"+env.BOT_TOKEN+"/sendPhoto",{method:"POST",body:form});
+      if(!tg.ok)throw new Error("telegram sendPhoto "+tg.status);
+    }catch(e){
+      const payload={chat_id,photo:u[i]};
+      if(caption)payload.caption=caption;
+      await telegram(env,"sendPhoto",payload);
+    }
+  }
+}
 
 const APP_CSS = `
 :root{color-scheme:dark;--bg:#20252b;--card:#2b3138;--card2:#343b43;--text:#e7eaee;--muted:#aeb7c2;--accent:#7fb3ff}
