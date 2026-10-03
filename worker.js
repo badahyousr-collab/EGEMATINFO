@@ -1,6 +1,7 @@
 // DEPLOY_VERSION_20260929_BUILD_FIX
 const START_KEYBOARD={keyboard:[[{text:"🚀 Старт"}]],resize_keyboard:true,is_persistent:true};
 const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
+const INFO_MODE_CHATS=new Map();
 const INFO_MENU={inline_keyboard:[
 [{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?subject=informatics&v=20261003"}}],
 [{text:"🔎 Поиск",callback_data:"info_search"}],
@@ -358,7 +359,7 @@ async function handleUpdate(update,env){
     const raw=update.message.text.trim();
     const query=raw.replace(/^инф\s*/i,"").trim();
     const chat_id=update.message.chat.id;
-    const infoContext=!!update.message.reply_to_message && /информатик/i.test(update.message.reply_to_message.text||"");
+    const infoContext=INFO_MODE_CHATS.get(chat_id)==="informatics" || (!!update.message.reply_to_message && /информатик/i.test(update.message.reply_to_message.text||""));
     const taskNumber=/^(?:инф\s*)?№?\s*(\d{1,2})$/i.exec(raw)?.[1];
 
     if(taskNumber && (infoContext || /^инф/i.test(raw))){
@@ -428,8 +429,8 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   const chat_id=q.message.chat.id,message_id=q.message.message_id;
   let text=null,reply_markup=null;
 
-  if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
-  else if(q.data==="informatics"){text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU;
+  if(q.data==="math"){INFO_MODE_CHATS.delete(chat_id);text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
+  else if(q.data==="informatics"){INFO_MODE_CHATS.set(chat_id,"informatics");text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU;
     await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
     await telegram(env,"sendMessage",{chat_id,text:"💻 Напиши номер задания или тему по информатике.\n\nНапример: 7\nИли: черепаха, turtle, маска, рекурсия.",reply_markup:{force_reply:true,input_field_placeholder:"Номер или тема задания"}});
     return;
@@ -442,8 +443,8 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   else if(q.data==="open_full_file"){
     await telegram(env,"sendMessage",{chat_id,text:"📖 Открывай мини-шпору:",reply_markup:{inline_keyboard:[[{text:"📐 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260926"}}]]}}); return;
   }
-  else if(q.data==="back_main"){text="🎓 Выбор экзамена";reply_markup=MAIN_MENU}
-  else if(q.data==="back_math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
+  else if(q.data==="back_main"){INFO_MODE_CHATS.delete(chat_id);text="🎓 Выбор экзамена";reply_markup=MAIN_MENU}
+  else if(q.data==="back_math"){INFO_MODE_CHATS.delete(chat_id);text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
   if(text)await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
 }
 
