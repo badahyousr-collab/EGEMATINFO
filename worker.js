@@ -358,7 +358,7 @@ async function handleUpdate(update,env){
     const raw=update.message.text.trim();
     const query=raw.replace(/^инф\s*/i,"").trim();
     const chat_id=update.message.chat.id;
-    const infoContext=!!update.message.reply_to_message && /задания по информатике/i.test(update.message.reply_to_message.text||"");
+    const infoContext=!!update.message.reply_to_message && /информатик/i.test(update.message.reply_to_message.text||"");
     const taskNumber=/^(?:инф\s*)?№?\s*(\d{1,2})$/i.exec(raw)?.[1];
 
     if(taskNumber && (infoContext || /^инф/i.test(raw))){
@@ -429,7 +429,11 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   let text=null,reply_markup=null;
 
   if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
-  else if(q.data==="informatics"){text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU}
+  else if(q.data==="informatics"){text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU;
+    await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
+    await telegram(env,"sendMessage",{chat_id,text:"💻 Напиши номер задания или тему по информатике.\n\nНапример: 7\nИли: черепаха, turtle, маска, рекурсия.",reply_markup:{force_reply:true,input_field_placeholder:"Номер или тема задания"}});
+    return;
+  }
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
   else if(q.data==="info_search"){await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер или тему задания по информатике.\n\nНапример: 15\nИли: маска, рекурсия, делители, графы.",reply_markup:{force_reply:true,input_field_placeholder:"Тема или номер задания"}});return;}
   else if(q.data==="search_mode"){
