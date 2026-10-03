@@ -309,7 +309,7 @@ async function handleUpdate(update,env){
     const chat_id=update.message.chat.id;
     const taskNumber=/^(?:инф\s*)?№?\s*(\d{1,2})$/i.exec(raw)?.[1];
 
-    if(taskNumber && /^инф/i.test(raw)){
+    if(taskNumber && (infoContext || /^инф/i.test(raw))){
       const ok=await sendInfoTaskAnswer(env,chat_id,Number(taskNumber));
       if(!ok)await telegram(env,"sendMessage",{chat_id,text:"❌ В информатике ЕГЭ-2027 задания №1–27."});
       return;
