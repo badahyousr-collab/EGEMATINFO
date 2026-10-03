@@ -452,7 +452,14 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   let text=null,reply_markup=null;
 
   if(q.data==="math"){INFO_MODE_CHATS.delete(chat_id);text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
-  else if(q.data==="informatics"){INFO_MODE_CHATS.set(chat_id,"informatics");text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU;\n    await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});\n    return;\n  }\n  else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
+  else if(q.data==="informatics"){
+    INFO_MODE_CHATS.set(chat_id,"informatics");
+    text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";
+    reply_markup=INFO_MENU;
+    await telegram(env,"editMessageText",{chat_id,message_id,text,reply_markup});
+    return;
+  }
+  else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
   else if(q.data==="info_search"){await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер или тему задания по информатике.\n\nНапример: 15\nИли: маска, рекурсия, делители, графы.",reply_markup:{force_reply:true,input_field_placeholder:"Тема или номер задания"}});return;}
   else if(q.data==="search_mode"){
     await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:START_KEYBOARD}); return;
