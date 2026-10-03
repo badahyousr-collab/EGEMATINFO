@@ -358,7 +358,8 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   if(q.data==="math"){text="📐 Математика\n\nВыбери вариант экзамена:";reply_markup=MATH_MENU}
   else if(q.data==="informatics"){text="💻 Информатика ЕГЭ-2027\n\nВыберите действие:";reply_markup=INFO_MENU}
   else if(q.data==="profile_math"){text="📐 Профильная математика\n\nВыбери действие:";reply_markup=PROFILE_MENU}
-  else if(q.data==="info_search"){await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер или тему задания по информатике.\n\nНапример: 15\nИли: маска, рекурсия, делители, графы.",reply_markup:START_KEYBOARD});return;}\n  else if(q.data==="search_mode"){
+  else if(q.data==="info_search"){await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер или тему задания по информатике.\n\nНапример: 15\nИли: маска, рекурсия, делители, графы.",reply_markup:START_KEYBOARD});return;}
+  else if(q.data==="search_mode"){
     await telegram(env,"sendMessage",{chat_id,text:"🔎 Введите номер задания или тему — бот выдаст всю нужную информацию для решения прямо в чат.\n\nНапример: 15\nИли: логарифмы, пирамида, параметры.",reply_markup:START_KEYBOARD}); return;
   }
   else if(q.data==="open_full_file"){
