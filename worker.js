@@ -323,8 +323,14 @@ async function handleUpdate(update,env){
 const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...names,...(INFO_ALIASES[n]||[])));
     const infoCodes=INFO_CODE.filter(([t,b])=>matchesSearch(query,t,b));
     if(infoTasks.length){
-      let out="🔎 Информатика: «"+raw+"»\\n\\n"+infoTasks.slice(0,6).map(([n,t])=>"№"+n+" — "+t).join("\\n");
-      await sendTextChunks(env,chat_id,out); return;
+      let out="🔎 Информатика: «"+raw+"»\\n\\n";
+      for(const [n,t] of infoTasks.slice(0,6)){
+        out+="📘 №"+n+" — "+t+"\\n";
+        const codes=INFO_CODE.filter(([x])=>x.startsWith("№"+n+" ")||x.startsWith("№"+n+" —")||x.startsWith("№"+n+" –"));
+        if(codes.length)out+="\\n💻 Программа / шаблон:\\n"+codes.map(x=>x[1]).join("\\n\\n")+"\\n";
+        out+="\\n";
+      }
+      await sendTextChunks(env,chat_id,out.trim()); return;
     }
     if(infoCodes.length){
       let out="🔎 Информатика: «"+raw+"»\\n\\n"+infoCodes.slice(0,5).map(([t,b])=>"📌 "+t+"\\n"+b).join("\\n\\n");
