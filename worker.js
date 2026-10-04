@@ -492,7 +492,7 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
 export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
-    if(url.pathname==="/app"){try{return new Response(appHtml(url.searchParams.get("subject"),url.searchParams.get("py")==="1"),{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"}})}catch(e){return new Response("<!doctype html><meta charset=utf-8><body style=\"font-family:Arial;background:#20252b;color:#eee;padding:24px\"><h2>Мини-шпора временно не загрузилась</h2><p>Открой её ещё раз.</p></body>",{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}})}}
+    if(url.pathname==="/app"){try{return new Response(appHtml(url.searchParams.get("subject")||"informatics",url.searchParams.get("py")==="1"),{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"}})}catch(e){return new Response("<!doctype html><meta charset=utf-8><body style=\"font-family:Arial;background:#20252b;color:#eee;padding:24px\"><h2>Мини-шпора временно не загрузилась</h2><p>Открой её ещё раз.</p></body>",{status:200,headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}})}}
     if(url.pathname==="/setup"){
       const result=await telegram(env,"setWebhook",{url:"https://egematinfo.badahyousr.workers.dev/telegram",allowed_updates:["message","callback_query"]});
       return new Response(JSON.stringify(result),{headers:{"content-type":"application/json"}});
