@@ -1,6 +1,14 @@
 // DEPLOY_VERSION_20260929_BUILD_FIX
 const START_KEYBOARD={keyboard:[[{text:"🚀 Старт"}]],resize_keyboard:true,is_persistent:true};
-const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}],[{text:"📅 Моё расписание",callback_data:"schedule"}]]};
+const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
+const SCHEDULE_USERNAME = "tabletass";
+function mainMenuForUser(user){
+  const username=String(user?.username||"").replace(/^@/,"").toLowerCase();
+  if(username===SCHEDULE_USERNAME){
+    return {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}],[{text:"📅 Моё расписание",callback_data:"schedule"}]]};
+  }
+  return MAIN_MENU;
+}
 
 const WEEKLY_SCHEDULE = `📅 МОЁ РАСПИСАНИЕ НА НЕДЕЛЮ
 
@@ -489,7 +497,7 @@ async function handleUpdate(update,env){
     return;
   }
   if(update.message?.text?.startsWith("/start") || update.message?.text?.trim()==="🚀 Старт"){
-    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена\n\nВыберите предмет:",reply_markup:MAIN_MENU});
+    await telegram(env,"sendMessage",{chat_id:update.message.chat.id,text:"🎓 Выбор экзамена\n\nВыберите предмет:",reply_markup:mainMenuForUser(update.message.from)});
     return;
   }
   if(update.message?.text && !update.message.text.startsWith("/")){
@@ -569,6 +577,11 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
   let text=null,reply_markup=null;
 
   if(q.data==="schedule"){
+    const username=String(q.from?.username||"").replace(/^@/,"").toLowerCase();
+    if(username!==SCHEDULE_USERNAME){
+      await telegram(env,"answerCallbackQuery",{callback_query_id:q.id,text:"⛔ Расписание доступно только @tabletass.",show_alert:true});
+      return;
+    }
     await sendTextChunks(env,chat_id,WEEKLY_SCHEDULE);
     return;
   }
