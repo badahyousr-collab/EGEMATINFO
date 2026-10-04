@@ -133,7 +133,19 @@ const INFO_PLAN=[
 
 
 INFO_HIGHLIGHTS[13]=["команды выполняем по порядку","после каждого шага фиксируем состояние","если есть цикл — определяем число повторений","не путать условие команды с результатом её выполнения"];
-const INFO_CODE=[["№13 — исполнитель","s=...\np=...\n\nfor i in range(...):\n    # выполнить команду из условия\n    s=...\n\nprint(s)"],["№9 — Python-проверка строк","k=0\n\nfor s in open('9.txt'):\n    a=sorted(map(int,s.split()))\n    if len(set(a))==5:\n        if 2*(a[0]+a[-1])>sum(a[1:-1]):\n            k=k+1\n\nprint(k)"],["№2 — таблица истинности","from itertools import product\n\nfor A,B,C,D in product([0,1],repeat=4):\n    F=...\n    if F:\n        print(A,B,C,D)"],["№5 — простой шаблон","a=1\nb=1\n\nfor i in range(6):\n    c=a+b\n    a=b\n    b=c\n\nprint(b)"],
+const INFO_CODE=[["№25 — обработка пятизначного числа",`for n in range(10000,99999+1):
+    s=sum(int(x) for x in str(n))
+    m=int(max(str(n)))+int(min(str(n)))
+    l=n//10000
+    r=n%10
+    p1=m-l
+    p2=m-r
+    if p1>p2:
+        z=str(p2)+str(p1)
+    else:
+        z=str(p1)+str(p2)
+    if z=='222':
+        print(n)`],["№13 — исполнитель","s=...\np=...\n\nfor i in range(...):\n    # выполнить команду из условия\n    s=...\n\nprint(s)"],["№9 — Python-проверка строк","k=0\n\nfor s in open('9.txt'):\n    a=sorted(map(int,s.split()))\n    if len(set(a))==5:\n        if 2*(a[0]+a[-1])>sum(a[1:-1]):\n            k=k+1\n\nprint(k)"],["№2 — таблица истинности","from itertools import product\n\nfor A,B,C,D in product([0,1],repeat=4):\n    F=...\n    if F:\n        print(A,B,C,D)"],["№5 — простой шаблон","a=1\nb=1\n\nfor i in range(6):\n    c=a+b\n    a=b\n    b=c\n\nprint(b)"],
 ["№6 — Turtle",`from turtle import *
 
 screensize(2000,2000)
