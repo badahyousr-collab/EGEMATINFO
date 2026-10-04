@@ -3,7 +3,7 @@ const START_KEYBOARD={keyboard:[[{text:"🚀 Старт"}]],resize_keyboard:true
 const MAIN_MENU = {inline_keyboard: [[{text:"📐 Математика",callback_data:"math"}],[{text:"💻 Информатика",callback_data:"informatics"}]]};
 const INFO_MODE_CHATS=new Map();
 const INFO_MENU={inline_keyboard:[
-[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?subject=informatics&v=20261003"}}],
+[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?subject=informatics&v=20261003"}}],[{text:"🐍 Настройка Python",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?py=1"}}],
 [{text:"🔎 Поиск",callback_data:"info_search"}],
 [{text:"⬅️ Назад",callback_data:"back_main"}]
 ]};
