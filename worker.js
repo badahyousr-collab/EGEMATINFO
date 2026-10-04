@@ -131,7 +131,7 @@ const INFO_PLAN=[
 ["ЧАСТЬ 2 — PYTHON",[25,24,27,26]]
 ];
 
-const INFO_CODE=[
+const INFO_CODE=[["№5 — простой шаблон","a=1\nb=1\n\nfor i in range(6):\n    c=a+b\n    a=b\n    b=c\n\nprint(b)"],
 ["№6 — Turtle",`from turtle import *
 
 screensize(2000,2000)
