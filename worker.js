@@ -252,6 +252,8 @@ function infoPythonHtml(){
 
 const INFO_ORDER=[1,4,7,11,12,6,5,2,14,16,13,19,20,21,9,23,10,8,15,17,3,18,22,9,26,25,24,27,26];
 
+INFO_TASKS_2027.sort((a,b)=>INFO_ORDER.indexOf(a[0])-INFO_ORDER.indexOf(b[0]));
+
 function infoAppHtml(){
   const tasks=INFO_TASKS_2027.map(([n,title,names])=>{
     const h=(INFO_HIGHLIGHTS[n]||[]).map(x=>'<div class="highlight">• '+x+'</div>').join('');
