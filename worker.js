@@ -250,7 +250,7 @@ function infoPythonHtml(){
   return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Настройка Python — ЕГЭ информатика 2027</title><style>body{margin:0;background:#20252b;color:#e7eaee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:780px;margin:auto;padding:16px 12px 36px}.py-card{background:#2b3138;border:1px solid #424a54;border-radius:14px;margin:10px 0;overflow:hidden}.py-card h2{font-size:17px;margin:0;padding:13px 14px;background:#343b43}.py-card pre{margin:0;padding:13px 14px;white-space:pre-wrap;overflow:auto;font:14px/1.55 monospace}.back{display:inline-block;margin-bottom:10px;color:#8bb8ff;text-decoration:none}</style></head><body><main class="wrap"><a class="back" href="/app?subject=informatics">← Назад в мини-шпору</a><h1>🐍 Настройка Python для ЕГЭ-2027</h1><p>Короткий рабочий набор для номеров с Python.</p>'+cards+'</main><script>if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}</script></body></html>';
 }
 
-const INFO_ORDER_TEST=[1,4,7,11,12];
+const INFO_ORDER=[1,4,7,11,12,6,5,2,14,16,13,19,20,21,9,23,10,8,15,17,3,18,22,9,26,25,24,27,26];
 
 function infoAppHtml(){
   const tasks=INFO_TASKS_2027.map(([n,title,names])=>{
