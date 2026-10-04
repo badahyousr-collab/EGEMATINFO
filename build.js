@@ -11,9 +11,13 @@ if(!worker.includes('import {IMAGE_FILES,TASK_IMAGE_INDEX} from "./math_images.j
 if(!worker.includes("const TASKS_2027 =")) throw new Error("task patch failed");
 fs.writeFileSync(workerPath,worker);
 
-const html=fs.readFileSync("moe_hranilishche_s_kartinkami.html","utf8");
+const html=fs.existsSync("moe_hranilishche_s_kartinkami.html")?fs.readFileSync("moe_hranilishche_s_kartinkami.html","utf8"):"";
 const m=html.match(/const\s+images\s*=\s*(\[[\s\S]*?\])\s*;/);
-if(!m) throw new Error("images array not found");
+if(!m){
+  if(!fs.existsSync("math_images.js"))throw new Error("images source and math_images.js are both missing");
+  console.log("Using existing math_images.js; source HTML is empty or unavailable.");
+  process.exit(0);
+}
 const images=JSON.parse(m[1]);
 if(images.length!==186) throw new Error(`expected 186 images, got ${images.length}`);
 const mapping={"1":[22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,181,182,183,184,185,186],"2":[16,17,18,19,20,21],"3":[90,91,92,93,94,95,96,97,98,99,100,101,102],"4":[],"5":[],"6":[],"7":[3,4,110,111],"8":[1,2,160,161,163,164],"9":[5,6,23,24,125,126,127,129,131,134],"10":[],"11":[146,147,148,149,150,151,152,153,154,155,156],"12":[13,14,15,25,120,175,176,177,178,179,180],"13":[],"14":[7,8,9,10,11,12,13,14,15,166,167,168,169,170,171],"15":[103,104,105,106,107,108,109],"16":[115,116,117,121,160,161,162,163,164,165,172,173,174],"17":[],"18":[43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89],"19":[112,113,114,118,119,121,122,123,124],"20":[125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,157,158,159]};
