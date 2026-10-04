@@ -1,4 +1,7 @@
 const fs=require("fs");
+const workerPath="worker.js";
+const worker=fs.readFileSync(workerPath,"utf8").replaceAll("aᵐ/aⁿ=aᵐⁿ⁻ᵐ","aᵐ/aⁿ=aᵐ⁻ⁿ");
+fs.writeFileSync(workerPath,worker);
 const html=fs.readFileSync("moe_hranilishche_s_kartinkami.html","utf8");
 const m=html.match(/const\s+images\s*=\s*(\[[\s\S]*?\])\s*;/);
 if(!m) throw new Error("images array not found");
