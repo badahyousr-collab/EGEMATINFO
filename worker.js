@@ -131,7 +131,7 @@ const INFO_PLAN=[
 ["ЧАСТЬ 2 — PYTHON",[25,24,27,26]]
 ];
 
-const INFO_CODE=[["№5 — простой шаблон","a=1\nb=1\n\nfor i in range(6):\n    c=a+b\n    a=b\n    b=c\n\nprint(b)"],
+const INFO_CODE=[["№9 — Python-проверка строк","k=0\n\nfor s in open('9.txt'):\n    a=sorted(map(int,s.split()))\n    if len(set(a))==5:\n        if 2*(a[0]+a[-1])>sum(a[1:-1]):\n            k=k+1\n\nprint(k)"],["№2 — таблица истинности","from itertools import product\n\nfor A,B,C,D in product([0,1],repeat=4):\n    F=...\n    if F:\n        print(A,B,C,D)"],["№5 — простой шаблон","a=1\nb=1\n\nfor i in range(6):\n    c=a+b\n    a=b\n    b=c\n\nprint(b)"],
 ["№6 — Turtle",`from turtle import *
 
 screensize(2000,2000)
