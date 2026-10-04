@@ -1,0 +1,15 @@
+const fs=require("fs");
+const html=fs.readFileSync("moe_hranilishche_s_kartinkami.html","utf8");
+const m=html.match(/const\s+images\s*=\s*(\[[\s\S]*?\])\s*;/);
+if(!m) throw new Error("images array not found");
+const images=JSON.parse(m[1]);
+if(images.length!==186) throw new Error(`expected 186 images, got ${images.length}`);
+const mapping={1:[...Array.from({length:21},(_,i)=>i+22),...Array.from({length:6},(_,i)=>i+181)],2:[16,17,18,19,20,21],3:Array.from({length:13},(_,i)=>i+90),4:[],5:[],6:[],7:[3,4,110,111],8:[1,2,160,161,163,164],9:[5,6,23,24,125,126,127,129,131,134],10:[],11:Array.from({length:11},(_,i)=>i+146),12:[13,14,15,25,175,176,177,178,179,180,120],13:[],14:[7,8,9,10,11,12,13,14,15,166,167,168,169,170,171],15:[103,104,105,106,107,108,109],16:[115,116,117,121,160,161,162,163,164,165,172,173,174],17:[114,118,119,122,123,124],18:Array.from({length:47},(_,i)=>i+43),19:[112,113,114,118,119,121,122],20:[125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,157,158,159]};
+const paths=images.map((x,i)=>`${i<95?"vsya mat":"vsya mat 2"}/${x.name}`);
+const used=new Set(Object.values(mapping).flat());
+if(used.size!==186) throw new Error(`mapping covers ${used.size}/186 images`);
+for(const [n,list] of Object.entries(mapping)) for(const i of list) if(!Number.isInteger(i)||i<1||i>186) throw new Error(`bad image index ${i} for task ${n}`);
+fs.writeFileSync("math_images.js","export const IMAGE_FILES="+JSON.stringify(paths)+";\nexport const TASK_IMAGE_INDEX="+JSON.stringify(mapping)+";\n");
+const manifest=["# Новый набор изображений ЕГЭ-2027",`# HTML images: ${images.length}`,"# Источник: moe_hranilishche_s_kartinkami.html","# Формат: индекс | файл | размер | задания",...images.map((x,i)=>{const tasks=Object.entries(mapping).filter(([,list])=>list.includes(i+1)).map(([n])=>n).join(",");return `${i+1} | ${paths[i]} | ${x.size} | ${tasks}`;})].join("\n")+"\n";
+fs.writeFileSync("image_manifest.txt",manifest);
+console.log(`Generated math_images.js and image_manifest.txt from ${images.length} HTML images.`);
