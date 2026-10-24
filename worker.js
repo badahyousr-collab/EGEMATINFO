@@ -466,69 +466,122 @@ function infoEscapeHtml(text){
 
 // Telegram HTML: <blockquote expandable> is a native collapsible quotation.
 // Split at line boundaries instead of chopping up an HTML tag or a Python expression.
-async function sendInfoProgram(env,chat_id,entry){
-  const title=String(entry.title||"Программа");
-  const theory=String(entry.lesson||"Подставь данные своего варианта и проверь условие отбора.");
-  const source=String(entry.code||"");
-  const lines=source.split("\n");
-  const parts=[];
-  let buf="";
-  for(const line of lines){
-    if(buf.length+line.length+1>2750 && buf){
-      parts.push(buf);
-      buf="";
-    }
-    buf+=(buf?"\n":"")+line;
+// Один результат поиска = одно сообщение Telegram.
+// 4096 символов для text, 1024 для caption. Если все материалы или картинки
+// превышают предел, прикрепляем ОДИН HTML-документ со всеми блоками, кодом и изображениями.
+function infoSearchPrograms(num){
+  const user=INFO_USER_PROGRAMS.filter(p=>p.n===num || (num===20||num===21)&&p.n===19);
+  const existing=(user.length===0||num===13||num===23)
+    ? infoCodeForTask(num).map(([title,code])=>({
+        title,code,lesson:"Исходный шаблон бота. Замени значения, файл и условия под свой вариант; «...» нужно заполнить."
+      })) : [];
+  return [...existing,...user];
+}
+function infoSearchSection(num){
+  const task=INFO_TASKS_2027.find(x=>x[0]===num);
+  if(!task)return null;
+  const [n,title,names]=task;
+  const heading="💻 №"+n+" — "+title;
+  const theory=INFO_GUIDES[n]||"Изучи условия и подставь параметры своего варианта.";
+  const points=INFO_HIGHLIGHTS[n]||[];
+  const programs=infoSearchPrograms(n);
+  let telegramText="<b>"+infoEscapeHtml(heading)+"</b>\n\n<b>📌 Темы:</b> "+infoEscapeHtml(names.join(", "))+
+    "\n\n<b>📖 Теория:</b>\n"+infoEscapeHtml(theory);
+  if(points.length)telegramText+="\n\n<b>⭐ Важно:</b>\n"+infoEscapeHtml(points.map(x=>"• "+x).join("\n"));
+  let documentHtml="<section><h2>"+infoEscapeHtml(heading)+"</h2><h3>Темы</h3><p>"+infoEscapeHtml(names.join(", "))+
+    "</p><h3>Теория и порядок решения</h3><p>"+infoEscapeHtml(theory)+"</p>";
+  if(points.length)documentHtml+="<h3>Важно</h3><ul>"+points.map(x=>"<li>"+infoEscapeHtml(x)+"</li>").join("")+"</ul>";
+  for(const p of programs){
+    const name=String(p.title||"Программа"),explanation=String(p.lesson||"");
+    telegramText+="\n\n<b>💻 "+infoEscapeHtml(name)+"</b>";
+    if(explanation)telegramText+="\n<b>Разбор:</b> "+infoEscapeHtml(explanation);
+    telegramText+="\n<blockquote expandable>"+infoEscapeHtml(p.code||"")+"</blockquote>";
+    documentHtml+="<details><summary>💻 "+infoEscapeHtml(name)+" — раскрыть программу</summary>"+
+      "<p>"+infoEscapeHtml(explanation)+"</p><pre>"+infoEscapeHtml(p.code||"")+"</pre></details>";
   }
-  if(buf)parts.push(buf);
-  for(let i=0;i<parts.length;i++){
-    const heading="<b>💻 "+infoEscapeHtml(title)+(parts.length>1?" (часть "+(i+1)+"/"+parts.length+")":"")+"</b>";
-    const explanation=i===0?"\n\n<b>🧠 Разбор программы</b>\n"+infoEscapeHtml(theory)+"\n\n":"\n\n";
-    const html=heading+explanation+"<blockquote expandable>"+infoEscapeHtml(parts[i])+"</blockquote>";
-    const response=await telegram(env,"sendMessage",{chat_id,text:html,parse_mode:"HTML",reply_markup:START_KEYBOARD});
-    if(!response?.ok){
-      // Invalid entities should not prevent the user from receiving the code.
-      await sendTextChunks(env,chat_id,title+"\n\n"+theory+"\n\n"+parts[i]);
-    }
+  documentHtml+="</section>";
+  return {telegramText,documentHtml,imageCount:0,heading};
+}
+function mathSearchSection(num){
+  const task=TASKS_2027.find(x=>x[0]===num);
+  if(!task)return null;
+  const [n,title,names]=task;
+  const heading="📐 №"+n+" — "+title;
+  const highlights=TASK_HIGHLIGHTS[n]||[];
+  const selected=new Map(FORMULAS);
+  const formulas=names.filter(name=>selected.has(name)).map(name=>[name,selected.get(name)]);
+  const images=taskImageUrls(n);
+  let telegramText="<b>"+infoEscapeHtml(heading)+"</b>\n\n"+
+    "<b>📌 Что нужно знать:</b> "+infoEscapeHtml(names.join(", "));
+  if(highlights.length)telegramText+="\n\n<b>⭐ Главное:</b>\n"+infoEscapeHtml(highlights.map(x=>"• "+x).join("\n"));
+  let documentHtml="<section><h2>"+infoEscapeHtml(heading)+"</h2><p>"+infoEscapeHtml(names.join(", "))+"</p>";
+  if(highlights.length)documentHtml+="<h3>Главное</h3><ul>"+highlights.map(x=>"<li>"+infoEscapeHtml(x)+"</li>").join("")+"</ul>";
+  for(const [name,body] of formulas){
+    telegramText+="\n\n<b>📘 "+infoEscapeHtml(name)+"</b>\n<blockquote expandable>"+infoEscapeHtml(body)+"</blockquote>";
+    documentHtml+="<details open><summary>📘 "+infoEscapeHtml(name)+"</summary><pre>"+infoEscapeHtml(body)+"</pre></details>";
   }
+  if(images.length){
+    documentHtml+="<h3>Иллюстрации из шпоры ("+images.length+")</h3><div class='gallery'>";
+    for(let i=0;i<images.length;i++){
+      documentHtml+="<figure><img loading='lazy' src='"+infoEscapeHtml(images[i])+"' alt='Иллюстрация №"+
+        n+", изображение "+(i+1)+"'><figcaption>Рисунок "+(i+1)+"</figcaption></figure>";
+    }
+    documentHtml+="</div><p>Изображения загружаются по ссылкам из репозитория, когда есть интернет.</p>";
+  }
+  documentHtml+="</section>";
+  return {telegramText,documentHtml,imageCount:images.length,heading};
+}
+function formulaSearchSection(title,body){
+  return {
+    heading:title,imageCount:0,
+    telegramText:"<b>📘 "+infoEscapeHtml(title)+"</b>\n<blockquote expandable>"+infoEscapeHtml(body)+"</blockquote>",
+    documentHtml:"<section><h2>"+infoEscapeHtml(title)+"</h2><pre>"+infoEscapeHtml(body)+"</pre></section>"
+  };
+}
+function searchVisibleLength(markup){
+  return markup.replace(/<[^>]+>/g,"").replace(/&(?:amp|lt|gt|quot);/g,"X").length;
+}
+function oneSearchHtmlDocument(title,sections){
+  const css="*{box-sizing:border-box}body{font:16px/1.55 system-ui,Arial,sans-serif;background:#1f242b;color:#edf1f7;max-width:900px;margin:auto;padding:20px}h1{font-size:25px}h2{font-size:21px}h3{font-size:17px}section{background:#2b313a;border:1px solid #444e5c;border-radius:14px;padding:16px;margin:14px 0}details{margin:12px 0;padding:13px;border:1px solid #4c5666;border-radius:9px}summary{cursor:pointer;color:#9fc7ff;font-weight:bold}pre{white-space:pre-wrap;word-break:break-word;font:14px/1.55 ui-monospace,Consolas,monospace;background:#171d24;padding:14px;border-radius:9px;overflow:auto}p{white-space:pre-line}ul{padding-left:22px}.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.gallery figure{margin:0;background:#161c23;padding:8px;border-radius:9px}.gallery img{width:100%;height:auto}.gallery figcaption{text-align:center;font-size:12px;color:#c7d2e1}a{color:#9fc7ff}";
+  return "<!doctype html><html lang='ru'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>"+
+    infoEscapeHtml(title)+"</title><style>"+css+"</style></head><body><h1>"+
+    infoEscapeHtml(title)+"</h1><p>Теория, программы и изображения собраны в одном файле. Нажми на заголовок программы для раскрытия.</p>"+
+    sections.map(s=>s.documentHtml).join("\n")+"</body></html>";
+}
+async function sendOneSearchResult(env,chat_id,title,sections){
+  const all=sections.filter(Boolean);
+  if(!all.length)return false;
+  const text=all.map(s=>s.telegramText).join("\n\n──────────\n\n");
+  const hasImages=all.some(s=>s.imageCount>0);
+  // В обычном сообщении всё остаётся видно и код раскрывается по нажатию.
+  if(!hasImages && searchVisibleLength(text)<=3750){
+    const response=await telegram(env,"sendMessage",{
+      chat_id,text,parse_mode:"HTML",reply_markup:START_KEYBOARD
+    });
+    if(response?.ok)return true;
+  }
+  // Длинный ответ/много картинок: один прикреплённый HTML-документ.
+  const html=oneSearchHtmlDocument(title,all);
+  const form=new FormData();
+  form.append("chat_id",String(chat_id));
+  form.append("document",new Blob([html],{type:"text/html;charset=utf-8"}),"EGE_material.html");
+  form.append("caption",title+"\nВесь материал в одном файле: теория, раскрывающиеся программы и иллюстрации.");
+  const response=await fetch("https://api.telegram.org/bot"+env.BOT_TOKEN+"/sendDocument",{method:"POST",body:form});
+  const result=await response.json();
+  if(result.ok)return true;
+  // Если Telegram не принял файл, не делим ответ на десятки сообщений.
+  await telegram(env,"sendMessage",{chat_id,text:"Не удалось отправить единый материал. Попробуй поиск ещё раз.",reply_markup:START_KEYBOARD});
+  return false;
 }
 async function sendInfoTaskAnswer(env,chat_id,num){
-  const task=INFO_TASKS_2027.find(x=>x[0]===num);
-  if(!task)return false;
-  const [n,title,names]=task;
-  let out="💻 Задание №"+n+" — "+title+"\n\n";
-  out+="📌 Что нужно понимать:\n"+names.map(x=>"• "+x).join("\n");
-  if(INFO_GUIDES[n])out+="\n\n📖 ТЕОРИЯ И ПОРЯДОК РЕШЕНИЯ:\n"+INFO_GUIDES[n];
-  const h=INFO_HIGHLIGHTS[n]||[];
-  if(h.length)out+="\n\n⭐ Проверки и формулы:\n"+h.map(x=>"• "+x).join("\n");
-  await sendTextChunks(env,chat_id,out);
-
-  const userPrograms=INFO_USER_PROGRAMS.filter(p=>p.n===n || (n===20||n===21)&&p.n===19);
-  // Для 2027 №13 — исполнитель, №23 — графы. Сохраняем действующий шаблон
-  // и помечаем присланные примеры прежней нумерации как АРХИВ.
-  const existing=(userPrograms.length===0||n===13||n===23)
-    ? infoCodeForTask(n)
-    : [];
-  for(const [heading,code] of existing){
-    await sendInfoProgram(env,chat_id,{title:heading,lesson:"Это исходный шаблон бота для задания №"+n+". Перед запуском замени значения, файл и условия под свой вариант; строки с ... — места для дописывания.",code});
-  }
-  for(const program of userPrograms) await sendInfoProgram(env,chat_id,program);
-  return true;
+  const section=infoSearchSection(num);
+  if(!section)return false;
+  return sendOneSearchResult(env,chat_id,section.heading,[section]);
 }
-
 async function sendTaskAnswer(env,chat_id,num){
-  const task=TASKS_2027.find(x=>x[0]===num);
-  if(!task)return false;
-  const [n,title,names]=task;
-  let out="📘 Задание №"+n+" — "+title+"\\n\\n";
-  out+="📌 Что нужно для этого номера:\\n"+names.map(x=>"• "+x).join("\\n");
-  const highlights=TASK_HIGHLIGHTS[n]||[];
-  if(highlights.length)out+="\\n\\n⭐ Главное:\\n"+highlights.map(x=>"• "+x).join("\\n");
-  if(taskImageUrls(n).length)out+="\\n\\n🖼️ Ниже — только исходные материалы по этому номеру. Текстовые формулы, которые уже есть на изображениях, не дублирую.";
-  await sendTextChunks(env,chat_id,out);
-  await sendSourceImages(env,chat_id,n);
-  await telegram(env,"sendMessage",{chat_id,text:"📖 Полный материал — в мини-шпоре.",reply_markup:{inline_keyboard:[[{text:"📖 Открыть мини-шпору",web_app:{url:"https://egematinfo.badahyousr.workers.dev/app?v=20260930"}}]]}});
-  return true;
+  const section=mathSearchSection(num);
+  if(!section)return false;
+  return sendOneSearchResult(env,chat_id,section.heading,[section]);
 }
 
 async function handleSourceDocument(update,env){
@@ -587,21 +640,16 @@ async function handleUpdate(update,env){
 const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...names,...(INFO_ALIASES[n]||[]),...(INFO_HIGHLIGHTS[n]||[])));
     const infoCodes=INFO_CODE.filter(([t,b])=>matchesSearch(query,t,b));
     if(infoTasks.length){
-      await telegram(env,"sendMessage",{chat_id,text:"🔎 Нашёл материалы по запросу «"+raw+"». Ниже — теория и раскрывающиеся программы для первых совпадений:"});
-      for(const [n] of infoTasks.slice(0,3))await sendInfoTaskAnswer(env,chat_id,n);
-      if(infoTasks.length>3){
-        await telegram(env,"sendMessage",{chat_id,text:"Всего совпадений: "+infoTasks.length+". Чтобы открыть другой номер, отправь «инф 14» (подставь нужный номер)."});
-      }
+      const sections=infoTasks.map(([n])=>infoSearchSection(n));
+      await sendOneSearchResult(env,chat_id,"💻 Информатика: "+raw,sections);
       return;
     }
     if(infoCodes.length){
       const nums=[...new Set(infoCodes.map(([t])=>Number(t.match(/^№(\d+)/)?.[1])).filter(Boolean))];
-      if(nums.length){
-        for(const num of nums.slice(0,3))await sendInfoTaskAnswer(env,chat_id,num);
-      }else{
-        const out="🔎 Информатика: «"+raw+"»\n\n"+infoCodes.slice(0,5).map(([t,b])=>"📌 "+t+"\n"+b).join("\n\n");
-        await sendTextChunks(env,chat_id,out);
-      }
+      const sections=nums.length
+        ? nums.map(n=>infoSearchSection(n))
+        : infoCodes.map(([t,b])=>formulaSearchSection(t,b));
+      await sendOneSearchResult(env,chat_id,"💻 Информатика: "+raw,sections);
       return;
     }
     if(infoContext){
@@ -618,20 +666,12 @@ const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...n
       matchesSearch(query,title,...names)
     );
 
-    if(matchedTasks.length){
-      let out="🔎 Материал по запросу: «"+raw+"»\\n\\n";
-      out+="📘 Подходящие номера:\\n";
-      for(const [num,title] of matchedTasks.slice(0,4))out+="№"+num+" — "+title+"\\n";
-      out+="\\n🖼️ Ниже — только исходные материалы по найденным номерам. Текстовые формулы, которые уже есть на изображениях, не дублирую.";
-      await sendTextChunks(env,chat_id,out);
-      for(const [num] of matchedTasks.slice(0,4)) await sendSourceImages(env,chat_id,num);
-      await telegram(env,"sendMessage",{chat_id,text:"Если нужен весь материал конкретного номера — отправь только его номер, например «15»."});
-      return;
-    }
-    if(matchedFormulas.length){
-      let out="🔎 Формулы и правила по запросу: «"+raw+"»\\n\\n";
-      for(const [title,body] of matchedFormulas.slice(0,8))out+="📌 "+title+"\\n"+body+"\\n\\n";
-      await sendTextChunks(env,chat_id,out.trim());
+    if(matchedTasks.length || matchedFormulas.length){
+      const sections=[
+        ...matchedTasks.map(([num])=>mathSearchSection(num)),
+        ...matchedFormulas.map(([title,body])=>formulaSearchSection(title,body))
+      ];
+      await sendOneSearchResult(env,chat_id,"📐 Математика: "+raw,sections);
       return;
     }
 
