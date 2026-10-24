@@ -452,13 +452,62 @@ function infoCodeForTask(n){
     return n>=a && n<=b;
   });
 }
-async function sendInfoTaskAnswer(env,chat_id,num){
-  const task=INFO_TASKS_2027.find(x=>x[0]===num); if(!task)return false;
-  const [n,title,names]=task; let out="💻 Задание №"+n+" — "+title+"\\n\\n📌 "+names.map(x=>"• "+x).join("\\n");
-  const h=INFO_HIGHLIGHTS[n]||[]; if(h.length)out+="\\n\\n⭐ Главное:\\n"+h.map(x=>"• "+x).join("\\n");
-  const codes=infoCodeForTask(n); if(codes.length)out+="\\n\\n💻 Программа / шаблон:\\n"+codes.map(x=>"📌 "+x[0]+"\\n"+x[1]).join("\\n\\n");
-  await sendTextChunks(env,chat_id,out); return true;
+function infoEscapeHtml(text){
+  return String(text??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
+
+// Telegram HTML: <blockquote expandable> is a native collapsible quotation.
+// Split at line boundaries instead of chopping up an HTML tag or a Python expression.
+async function sendInfoProgram(env,chat_id,entry){
+  const title=String(entry.title||"Программа");
+  const theory=String(entry.lesson||"Подставь данные своего варианта и проверь условие отбора.");
+  const source=String(entry.code||"");
+  const lines=source.split("\n");
+  const parts=[];
+  let buf="";
+  for(const line of lines){
+    if(buf.length+line.length+1>2750 && buf){
+      parts.push(buf);
+      buf="";
+    }
+    buf+=(buf?"\n":"")+line;
+  }
+  if(buf)parts.push(buf);
+  for(let i=0;i<parts.length;i++){
+    const heading="<b>💻 "+infoEscapeHtml(title)+(parts.length>1?" (часть "+(i+1)+"/"+parts.length+")":"")+"</b>";
+    const explanation=i===0?"\n\n<b>🧠 Разбор программы</b>\n"+infoEscapeHtml(theory)+"\n\n":"\n\n";
+    const html=heading+explanation+"<blockquote expandable>"+infoEscapeHtml(parts[i])+"</blockquote>";
+    const response=await telegram(env,"sendMessage",{chat_id,text:html,parse_mode:"HTML",reply_markup:START_KEYBOARD});
+    if(!response?.ok){
+      // Invalid entities should not prevent the user from receiving the code.
+      await sendTextChunks(env,chat_id,title+"\n\n"+theory+"\n\n"+parts[i]);
+    }
+  }
+}
+async function sendInfoTaskAnswer(env,chat_id,num){
+  const task=INFO_TASKS_2027.find(x=>x[0]===num);
+  if(!task)return false;
+  const [n,title,names]=task;
+  let out="💻 Задание №"+n+" — "+title+"\n\n";
+  out+="📌 Что нужно понимать:\n"+names.map(x=>"• "+x).join("\n");
+  if(INFO_GUIDES[n])out+="\n\n📖 ТЕОРИЯ И ПОРЯДОК РЕШЕНИЯ:\n"+INFO_GUIDES[n];
+  const h=INFO_HIGHLIGHTS[n]||[];
+  if(h.length)out+="\n\n⭐ Проверки и формулы:\n"+h.map(x=>"• "+x).join("\n");
+  await sendTextChunks(env,chat_id,out);
+
+  const userPrograms=INFO_USER_PROGRAMS.filter(p=>p.n===n || (n===20||n===21)&&p.n===19);
+  // Для 2027 №13 — исполнитель, №23 — графы. Сохраняем действующий шаблон
+  // и помечаем присланные примеры прежней нумерации как АРХИВ.
+  const existing=(userPrograms.length===0||n===13||n===23)
+    ? infoCodeForTask(n)
+    : [];
+  for(const [heading,code] of existing){
+    await sendInfoProgram(env,chat_id,{title:heading,lesson:"Это исходный шаблон бота для задания №"+n+". Перед запуском замени значения, файл и условия под свой вариант; строки с ... — места для дописывания.",code});
+  }
+  for(const program of userPrograms) await sendInfoProgram(env,chat_id,program);
+  return true;
+}
+
 async function sendTaskAnswer(env,chat_id,num){
   const task=TASKS_2027.find(x=>x[0]===num);
   if(!task)return false;
@@ -530,20 +579,22 @@ async function handleUpdate(update,env){
 const infoTasks=INFO_TASKS_2027.filter(([n,t,names])=>matchesSearch(query,t,...names,...(INFO_ALIASES[n]||[]),...(INFO_HIGHLIGHTS[n]||[])));
     const infoCodes=INFO_CODE.filter(([t,b])=>matchesSearch(query,t,b));
     if(infoTasks.length){
-      let out="🔎 Информатика: «"+raw+"»\\n\\n";
-      for(const [n,t] of infoTasks.slice(0,6)){
-        out+="📘 №"+n+" — "+t+"\\n";
-        const h=INFO_HIGHLIGHTS[n]||[];
-        if(h.length)out+="\\n⭐ Главное:\\n"+h.map(x=>"• "+x).join("\\n")+"\\n";
-        const codes=infoCodeForTask(n);
-        if(codes.length)out+="\\n💻 Программа / шаблон:\\n"+codes.map(x=>x[1]).join("\\n\\n")+"\\n";
-        out+="\\n";
+      await telegram(env,"sendMessage",{chat_id,text:"🔎 Нашёл материалы по запросу «"+raw+"». Ниже — теория и раскрывающиеся программы для первых совпадений:"});
+      for(const [n] of infoTasks.slice(0,3))await sendInfoTaskAnswer(env,chat_id,n);
+      if(infoTasks.length>3){
+        await telegram(env,"sendMessage",{chat_id,text:"Всего совпадений: "+infoTasks.length+". Чтобы открыть другой номер, отправь «инф 14» (подставь нужный номер)."});
       }
-      await sendTextChunks(env,chat_id,out.trim()); return;
+      return;
     }
     if(infoCodes.length){
-      let out="🔎 Информатика: «"+raw+"»\\n\\n"+infoCodes.slice(0,5).map(([t,b])=>"📌 "+t+"\\n"+b).join("\\n\\n");
-      await sendTextChunks(env,chat_id,out); return;
+      const nums=[...new Set(infoCodes.map(([t])=>Number(t.match(/^№(\d+)/)?.[1])).filter(Boolean))];
+      if(nums.length){
+        for(const num of nums.slice(0,3))await sendInfoTaskAnswer(env,chat_id,num);
+      }else{
+        const out="🔎 Информатика: «"+raw+"»\n\n"+infoCodes.slice(0,5).map(([t,b])=>"📌 "+t+"\n"+b).join("\n\n");
+        await sendTextChunks(env,chat_id,out);
+      }
+      return;
     }
     if(infoContext){
       await telegram(env,"sendMessage",{chat_id,text:"❌ В информатике ничего не найдено.\\n\\nПопробуй №1–27 или тему: «черепаха», «turtle», «fnmatch», «маска», «рекурсия», «графы»."});
